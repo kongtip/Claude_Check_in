@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f7a55">
-<meta name="version" content="1.0.1">
+<meta name="version" content="1.1.0">
 <meta name="description" content="ระบบเช็คชื่อเข้าเรียนออนไลน์ คลาส Claude AI — บันทึกลง Google Sheets">
 <title>เช็คชื่อเข้าเรียน · Claude AI Class</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230f7a55'/%3E%3Cpath d='M12 4l1.6 5 5 1.6-5 1.6L12 17.2l-1.6-5-5-1.6 5-1.6z' fill='%23c6f36b'/%3E%3C/svg%3E">
@@ -230,6 +230,24 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 0 calc(2
 @media (prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important} }
 
 /* ---------- GitHub edition additions ---------- */
+.ver-pill{flex:none;height:26px;padding:0 10px;border-radius:99px;border:1px solid rgba(198,243,107,.55);background:rgba(198,243,107,.18);color:var(--lime);font:600 12px/1 "Bai Jamjuree",sans-serif;letter-spacing:.03em;display:inline-flex;align-items:center;gap:6px;margin-left:4px}
+.ver-pill:hover{background:rgba(198,243,107,.3)}
+.ver-pill .new{width:7px;height:7px;border-radius:50%;background:#ff8a3d;box-shadow:0 0 0 3px rgba(255,138,61,.3);display:none}
+.ver-pill.has-update .new{display:inline-block}
+.ver-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.ver-card{border:1px solid var(--line);border-radius:16px;padding:12px 14px;background:linear-gradient(135deg,var(--g50),#fff)}
+.ver-card .k{font-size:12px;color:var(--muted)}
+.ver-card .v{font-family:"Bai Jamjuree";font-size:24px;font-weight:700;color:var(--g800);margin-top:2px}
+.ver-status{border-radius:14px;padding:10px 14px;font-size:14px;margin-bottom:16px;border:1px solid var(--g200);background:var(--g50);color:var(--g900)}
+.ver-status.warn{background:var(--amber-bg);border-color:#f6d999;color:#6b4a00}
+.release{position:relative;padding:0 0 18px 22px;border-left:2px solid var(--g200);margin-left:6px}
+.release:last-child{border-left-color:transparent;padding-bottom:4px}
+.release::before{content:"";position:absolute;left:-7px;top:3px;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid var(--g500)}
+.release.current::before{background:var(--g500)}
+.release h4{margin:0;font-family:"Bai Jamjuree";font-size:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.release h4 small{font-family:"Anuphan";font-weight:400;font-size:13px;color:var(--muted)}
+.release .tag{font-family:"Anuphan";font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--g100);color:var(--g800)}
+.release ul{margin:6px 0 0;padding-left:18px;font-size:14px;line-height:1.6;color:var(--ink)}
 .sync{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-top:8px}
 .sync .dot{width:8px;height:8px;border-radius:50%;background:var(--g500);box-shadow:0 0 0 3px rgba(34,196,131,.2)}
 .sync.err .dot{background:var(--rose);box-shadow:0 0 0 3px rgba(229,72,77,.2)}
@@ -267,6 +285,7 @@ window.CHECKIN_CONFIG = {
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2.5l1.9 6.1 6.1 1.9-6.1 1.9L12 18.5l-1.9-6.1L4 10.5l6.1-1.9L12 2.5z" fill="#c6f36b"/><circle cx="18.5" cy="18.5" r="2" fill="#fff"/></svg>
         </div>
         <div style="min-width:0"><small>Class Attendance</small><b id="classTitle">Claude AI Class</b></div>
+        <button class="ver-pill" id="verPill" type="button" aria-label="ดูประวัติเวอร์ชัน"><span id="verPillText">v1.1.0</span><span class="new" aria-hidden="true"></span></button>
       </div>
       <button class="icon-btn" id="adminBtn" aria-label="สำหรับผู้สอน">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
@@ -291,7 +310,7 @@ window.CHECKIN_CONFIG = {
     <div class="stat"><div class="k"><i style="background:#c9d8d0"></i>ยังไม่มา</div><div class="v" id="sAbs">0</div></div>
   </section>
   <div class="progress"><div class="bar"><span class="on" id="barOn" style="width:0"></span><span class="late" id="barLate" style="width:0"></span></div><b id="pct">0%</b></div>
-  <div class="sync" id="sync"><span class="dot"></span><span id="syncText">กำลังเชื่อมต่อ Google Sheets…</span><button type="button" id="refreshBtn">รีเฟรช</button><span style="margin-left:auto" id="verText">เว็บ v1.0.1</span></div>
+  <div class="sync" id="sync"><span class="dot"></span><span id="syncText">กำลังเชื่อมต่อ Google Sheets…</span><button type="button" id="refreshBtn">รีเฟรช</button><span style="margin-left:auto" id="verText">เว็บ v1.1.0</span></div>
 
   <div class="banner info" id="demoBanner">ℹ️<div><b>โหมดทดลอง</b> — ยังไม่ได้ใส่ <code>APPS_SCRIPT_URL</code> ในส่วนตั้งค่าของไฟล์ <code>index.html</code> ข้อมูลจะหายเมื่อรีเฟรช ดูวิธีตั้งค่าใน README.md</div></div>
   <div class="banner info" id="updateBanner">🆕<div style="flex:1"><b id="updateText">มีเวอร์ชันใหม่</b> — แตะเพื่อโหลดเวอร์ชันล่าสุด</div><button class="btn btn-primary" id="updateBtn" style="height:36px;font-size:13px">โหลดใหม่</button></div>
@@ -317,9 +336,10 @@ window.CHECKIN_CONFIG = {
   <section class="list" id="list" aria-live="polite"></section>
 </main>
 
-<footer>Claude AI Class · ระบบเช็คชื่อออนไลน์ v1.0.1 · บันทึกลง Google Sheets · ใช้ได้ทั้งมือถือ แท็บเล็ต และคอมพิวเตอร์</footer>
+<footer>Claude AI Class · ระบบเช็คชื่อออนไลน์ v1.1.0 · บันทึกลง Google Sheets · ใช้ได้ทั้งมือถือ แท็บเล็ต และคอมพิวเตอร์</footer>
 
 <div class="overlay" id="ovCheck" role="dialog" aria-modal="true" aria-labelledby="ckName"><div class="sheet" id="sheetCheck"></div></div>
+<div class="overlay" id="ovVer" role="dialog" aria-modal="true" aria-label="ประวัติเวอร์ชัน"><div class="sheet" id="sheetVer"></div></div>
 <div class="overlay" id="ovAdmin" role="dialog" aria-modal="true" aria-label="จัดการคลาส"><div class="sheet wide" id="sheetAdmin"></div></div>
 <input type="file" id="fileInput" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" hidden>
 <div class="toast" id="toast" role="status"></div>
@@ -329,7 +349,27 @@ window.CHECKIN_CONFIG = {
 "use strict";
 
 /** เลขเวอร์ชันของหน้าเว็บ — เปลี่ยนพร้อม version.json, <meta name="version">, footer และ CHANGELOG.md */
-const APP_VERSION = "1.0.1";
+const APP_VERSION = "1.1.0";
+/** เวอร์ชันต่ำสุดของ Code.gs ที่หน้าเว็บนี้ใช้ร่วมได้ */
+const MIN_BACKEND = "1.0.0";
+/** ประวัติเวอร์ชัน (แสดงเมื่อกดป้ายเวอร์ชันบนหัวเว็บ) — เพิ่มรายการใหม่ไว้บนสุด */
+const RELEASES = [
+  { v:"1.1.0", date:"2026-11-14", items:[
+    "ป้ายเวอร์ชันบนหัวเว็บ กดเพื่อดูประวัติเวอร์ชันและสถานะการอัปเดต",
+    "จุดสีส้มบนป้ายเวอร์ชันเมื่อมีเวอร์ชันใหม่บน GitHub",
+    "ตรวจความเข้ากันได้กับ Apps Script ด้วยเวอร์ชันขั้นต่ำ"
+  ]},
+  { v:"1.0.1", date:"2026-11-14", items:[
+    "รวมดีไซน์ โค้ด และการตั้งค่าไว้ใน index.html ไฟล์เดียว แก้หน้าเว็บไม่มีดีไซน์บน GitHub Pages"
+  ]},
+  { v:"1.0.0", date:"2026-11-14", items:[
+    "เช็คชื่อด้วย Approve + ลายเซ็น บันทึกลง Google Sheets ทันที",
+    "สถานะตรงเวลา / มาสาย จากเวลาเซิร์ฟเวอร์ Google",
+    "โหมดผู้สอน: นำเข้ารายชื่อ CSV / Excel / Google Forms, ตั้งเวลาเรียน, ส่งออก CSV",
+    "รองรับมือถือ แท็บเล็ต และคอมพิวเตอร์"
+  ]}
+];
+const cmpVer = (a, b) => { const x = String(a).split(".").map(Number), y = String(b).split(".").map(Number); for (let i = 0; i < 3; i++){ const d = (x[i]||0) - (y[i]||0); if (d) return d; } return 0; };
 
 const CFG = window.CHECKIN_CONFIG || {};
 const API = String(CFG.APPS_SCRIPT_URL || "").trim();
@@ -352,7 +392,7 @@ const S = {
   demo: !API, isAdmin: false, pin: "", sheetUrl: "", loaded: false, err: false, busy: false,
   roster: [], checkins: {}, localSigs: {},
   settings: { title: CFG.CLASS_TITLE || "Claude AI Class", startTime: "09:00", lateAfter: 15 },
-  date: dateKey(new Date()), pickedDate: "", offset: 0, lastSync: 0, backendVersion: "",
+  date: dateKey(new Date()), pickedDate: "", offset: 0, lastSync: 0, backendVersion: "", latest: "",
   filter: "all", q: "", importRows: null
 };
 const now = () => Date.now() + S.offset;
@@ -445,11 +485,11 @@ async function load(silent = false){
 }
 function renderSync(){
   const el = $("#sync"); el.classList.toggle("err", S.err);
-  const mm = v => String(v).split(".").slice(0, 2).join(".");
-  const mismatch = !S.demo && S.backendVersion && S.backendVersion !== "ไม่ทราบ" && mm(S.backendVersion) !== mm(APP_VERSION);
+  const known = S.backendVersion && S.backendVersion !== "ไม่ทราบ";
+  const mismatch = !S.demo && known && (String(S.backendVersion).split(".")[0] !== APP_VERSION.split(".")[0] || cmpVer(S.backendVersion, MIN_BACKEND) < 0);
   $("#verText").textContent = `เว็บ v${APP_VERSION}` + (S.demo ? "" : ` · หลังบ้าน ${S.backendVersion ? "v" + S.backendVersion : "…"}`);
   $("#mismatchBanner").classList.toggle("show", !!mismatch);
-  if (mismatch) $("#mismatchText").textContent = `หน้าเว็บ v${APP_VERSION} แต่ Apps Script เป็น v${S.backendVersion} ซึ่งใช้ร่วมกันไม่ได้ — อัปเดต Code.gs แล้ว Deploy เวอร์ชันใหม่ (ดู README ข้อ "อัปเดตเวอร์ชัน")`;
+  if (mismatch) $("#mismatchText").textContent = `หน้าเว็บ v${APP_VERSION} แต่ Apps Script เป็น v${S.backendVersion} ซึ่งต้องการหลังบ้านอย่างน้อย v${MIN_BACKEND} — อัปเดต Code.gs แล้ว Deploy เวอร์ชันใหม่ (ดู README ข้อ "อัปเดตเวอร์ชัน")`;
   $("#syncText").textContent = S.demo ? "โหมดทดลอง · ยังไม่เชื่อม Google Sheets"
     : S.err ? "เชื่อมต่อไม่ได้ · กำลังลองใหม่"
     : S.lastSync ? `เชื่อม Google Sheets แล้ว · อัปเดตล่าสุด ${fmtTimeSec(S.lastSync)}` : "กำลังเชื่อมต่อ Google Sheets…";
@@ -464,13 +504,33 @@ async function checkUpdate(){
     const r = await fetch(`version.json?_=${Date.now()}`, { cache:"no-store" });
     if (!r.ok) return;
     const v = await r.json();
-    if (v.version && v.version !== APP_VERSION){
+    S.latest = v.version || "";
+    if (v.version && cmpVer(v.version, APP_VERSION) > 0){
+      $("#verPill").classList.add("has-update");
       $("#updateText").textContent = `มีเวอร์ชันใหม่ v${v.version} (ตอนนี้ใช้ v${APP_VERSION})`;
       $("#updateBanner").classList.add("show");
     }
   }catch{}
 }
 setInterval(() => { if (document.visibilityState === "visible") checkUpdate(); }, 5 * 60 * 1000);
+
+/* ---------- Version history sheet ---------- */
+function openVersions(){
+  const upd = S.latest && cmpVer(S.latest, APP_VERSION) > 0;
+  const be = S.demo ? "ยังไม่เชื่อม" : (S.backendVersion && S.backendVersion !== "ไม่ทราบ" ? "v" + S.backendVersion : "ไม่ทราบ");
+  const status = upd ? `<div class="ver-status warn">🆕 มีเวอร์ชันใหม่ <b>v${esc(S.latest)}</b> บน GitHub — <a href="#" id="verReload" style="color:inherit;font-weight:700">โหลดเวอร์ชันล่าสุด</a></div>`
+    : S.latest ? `<div class="ver-status">✅ ใช้เวอร์ชันล่าสุดแล้ว (ตรวจกับ GitHub เมื่อ ${fmtTime(Date.now())} น.)</div>`
+    : `<div class="ver-status">ℹ️ ยังตรวจเวอร์ชันล่าสุดจาก GitHub ไม่ได้ (เช่น เปิดจากไฟล์ในเครื่อง)</div>`;
+  $("#sheetVer").innerHTML = `<div class="grip"></div>
+    <div class="sheet-h"><div><h2>เวอร์ชันของระบบ</h2><div class="sub">ระบบเช็คชื่อ ${esc(S.settings.title || "Claude AI Class")}</div></div><button class="x" data-close="#ovVer" aria-label="ปิด">✕</button></div>
+    <div class="ver-cards"><div class="ver-card"><div class="k">หน้าเว็บ</div><div class="v">v${APP_VERSION}</div></div><div class="ver-card"><div class="k">ระบบหลังบ้าน (Apps Script)</div><div class="v">${esc(be)}</div></div></div>
+    ${status}
+    <h3 style="font-size:16px;margin:0 0 12px">ประวัติการพัฒนา</h3>
+    ${RELEASES.map(r => `<div class="release ${r.v === APP_VERSION ? "current" : ""}"><h4>v${esc(r.v)} <small>${esc(thDate(keyToDate(r.date), false))}</small>${r.v === APP_VERSION ? '<span class="tag">ที่ใช้อยู่</span>' : ""}</h4><ul>${r.items.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div>`).join("")}
+    <div class="actions"><button class="btn btn-primary" data-close="#ovVer">ปิด</button></div>`;
+  openOv("#ovVer");
+  const rl = $("#verReload"); if (rl) rl.onclick = e => { e.preventDefault(); location.reload(); };
+}
 
 /* ---------- Render ---------- */
 function render(){
@@ -838,6 +898,7 @@ document.addEventListener("click", e => {
 $("#adminBtn").onclick = () => S.isAdmin ? openAdmin() : openPin();
 $("#refreshBtn").onclick = () => load();
 $("#updateBtn").onclick = () => location.reload();
+$("#verPill").onclick = () => { checkUpdate(); openVersions(); };
 $("#q").addEventListener("input", e => { S.q = e.target.value; $("#searchWrap").classList.toggle("has", !!S.q); render(); });
 $("#qClear").onclick = () => { S.q = ""; $("#q").value = ""; $("#searchWrap").classList.remove("has"); render(); $("#q").focus(); };
 document.querySelectorAll(".chip").forEach(b => b.onclick = () => { S.filter = b.dataset.f; document.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === b)); render(); });

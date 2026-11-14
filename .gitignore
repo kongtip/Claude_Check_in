@@ -1,0 +1,7 @@
+# ข้อมูลผู้เรียนจริงไม่ควรขึ้น GitHub (repo สาธารณะใครก็เปิดอ่านได้)
+private/
+*.xlsx
+roster-*.csv
+!templates/roster-template.csv
+.DS_Store
+Thumbs.db
