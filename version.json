@@ -1,5 +1,6 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "backend": "1.0.0",
   "date": "2026-11-14",
-  "notes": "เวอร์ชันแรกสำหรับ GitHub Pages + Google Sheets"
+  "notes": "รวมทุกอย่างไว้ใน index.html ไฟล์เดียว แก้ปัญหาหน้าเว็บไม่มีดีไซน์บน GitHub Pages"
 }

@@ -1,6 +1,6 @@
 # เช็คชื่อเข้าเรียน · Claude AI Class
 
-**เวอร์ชัน 1.0.0** · อัปเดต 14 พ.ย. 2026 · ดูการเปลี่ยนแปลงใน [CHANGELOG.md](CHANGELOG.md)
+**เวอร์ชัน 1.0.1** (หน้าเว็บ v1.0.1 · หลังบ้าน v1.0.0) · อัปเดต 14 พ.ย. 2026 · ดูการเปลี่ยนแปลงใน [CHANGELOG.md](CHANGELOG.md)
 
 ระบบเช็คชื่อเข้าเรียนออนไลน์ ผู้เรียนแตะชื่อตัวเอง เซ็นชื่อ แล้วกด **Approve** ระบบจะบันทึกเวลา สถานะ (ตรงเวลา / มาสาย) และลายเซ็น **ลง Google Sheet ทันที** ใช้ได้ทั้งมือถือ แท็บเล็ต และคอมพิวเตอร์
 
@@ -14,13 +14,9 @@
 
 ```
 claude-ai-class-checkin/
-├── index.html              หน้าเว็บหลัก
-├── config.js               ← ใส่ URL ของ Apps Script ที่นี่ (ไฟล์เดียวที่ต้องแก้)
+├── index.html              หน้าเว็บทั้งหมดในไฟล์เดียว ← ใส่ URL ของ Apps Script ที่ด้านบนไฟล์
 ├── version.json            เลขเวอร์ชันล่าสุด (หน้าเว็บใช้เช็คว่ามีเวอร์ชันใหม่)
-├── assets/
-│   ├── app.js              โค้ดหน้าเว็บ
-│   └── style.css           หน้าตา (โทนขาว-เขียว)
-├── apps-script/
+├── apps-script/            (ไม่ต้องใช้บน GitHub — คัดลอกไปวางใน Google Apps Script)
 │   ├── Code.gs             โค้ดหลังบ้าน — คัดลอกไปวางใน Apps Script
 │   └── appsscript.json     ตั้งค่าโปรเจกต์ Apps Script (เขตเวลา Asia/Bangkok)
 ├── templates/
@@ -58,7 +54,8 @@ claude-ai-class-checkin/
    - Who has access: **Anyone**
 3. กด **Deploy** แล้วคัดลอก **Web app URL** (ลงท้ายด้วย `/exec`)
 
-### 5. ใส่ URL ใน `config.js`
+### 5. ใส่ URL ใน `index.html`
+เปิด `index.html` (บน GitHub กดรูปดินสอ ✏️) หาส่วน **ตั้งค่า** ด้านบนไฟล์ แล้ววาง URL:
 ```js
 window.CHECKIN_CONFIG = {
   APPS_SCRIPT_URL: "https://script.google.com/macros/s/xxxxxxxx/exec",
@@ -69,12 +66,13 @@ window.CHECKIN_CONFIG = {
 
 ### 6. ขึ้น GitHub Pages
 1. สร้าง repository ใหม่บน GitHub เช่น `claude-ai-class-checkin`
-2. อัปโหลดไฟล์ทั้งหมดในโฟลเดอร์นี้ (Add file › Upload files) แล้ว Commit
+2. **Add file › Upload files** › อัปโหลดอย่างน้อย `index.html` และ `version.json` ไว้ที่ชั้นนอกสุดของ repo (ไม่ใช่ในโฟลเดอร์ย่อย) แล้ว Commit
+   ไฟล์อื่น (README, CHANGELOG, apps-script) อัปไว้เป็นเอกสารได้ แต่หน้าเว็บไม่จำเป็นต้องใช้
 3. **Settings › Pages** › Source: **Deploy from a branch** › Branch: `main` / `(root)` › Save
 4. รอ 1–2 นาที จะได้ลิงก์ `https://<ชื่อผู้ใช้>.github.io/claude-ai-class-checkin/`
 
 ### 7. ทดสอบ
-1. เปิดลิงก์ › ด้านล่างแถบสรุปต้องขึ้น **"เชื่อม Google Sheets แล้ว"** และ **"เว็บ v1.0.0 · หลังบ้าน v1.0.0"**
+1. เปิดลิงก์ › ด้านล่างแถบสรุปต้องขึ้น **"เชื่อม Google Sheets แล้ว"** และ **"เว็บ v1.0.1 · หลังบ้าน v1.0.0"**
 2. กดปุ่ม **ผู้สอน** มุมขวาบน › ใส่ PIN › นำเข้ารายชื่อ
 3. ลองเช็คชื่อ 1 คน › เปิด Google Sheet ชีต `Attendance` ต้องมีแถวใหม่ทันที
 
@@ -114,16 +112,16 @@ window.CHECKIN_CONFIG = {
 | หน้าเว็บ | ใต้แถบสรุป "เว็บ v…", ท้ายหน้า และหน้าจัดการคลาส |
 | ระบบหลังบ้าน | ใต้แถบสรุป "หลังบ้าน v…" (ส่งมาจาก Apps Script) |
 | เวอร์ชันใหม่บน GitHub | หน้าเว็บเช็ค `version.json` ทุก 5 นาที ถ้ามีใหม่จะขึ้นแถบ **"มีเวอร์ชันใหม่"** ให้กดโหลด |
-| เวอร์ชันไม่ตรงกัน | ถ้าหน้าเว็บกับ Apps Script คนละเวอร์ชัน จะขึ้นแถบเตือนสีเหลือง |
+| เวอร์ชันไม่ตรงกัน | ถ้าเลข MAJOR.MINOR ของหน้าเว็บกับ Apps Script ต่างกัน (เช่น 1.1 กับ 1.0) จะขึ้นแถบเตือนสีเหลือง — ต่างกันแค่เลขท้าย (1.0.1 กับ 1.0.0) ใช้ร่วมกันได้ |
 
 ### อัปเดตเวอร์ชัน (เช่น 1.0.0 → 1.1.0)
-1. แทนที่ไฟล์ใน GitHub ด้วยไฟล์ชุดใหม่ (`config.js` เก็บของเดิมไว้ เพื่อไม่ให้ URL หาย)
+1. คัดลอก `APPS_SCRIPT_URL` จาก `index.html` เดิมเก็บไว้ › อัปโหลด `index.html` และ `version.json` ชุดใหม่ทับ › ใส่ URL กลับในส่วนตั้งค่า
 2. ถ้า `Code.gs` เปลี่ยน ให้วางโค้ดใหม่ใน Apps Script แล้วไปที่
    **Deploy › Manage deployments › ✏️ Edit › Version: New version › Deploy**
-   (วิธีนี้ทำให้ URL เดิมยังใช้ได้ ไม่ต้องแก้ `config.js`)
-3. เปิดหน้าเว็บ ตรวจว่าขึ้น "เว็บ v1.1.0 · หลังบ้าน v1.1.0"
+   (วิธีนี้ทำให้ URL เดิมยังใช้ได้ ไม่ต้องแก้ APPS_SCRIPT_URL)
+3. เปิดหน้าเว็บ ตรวจเลขเวอร์ชันใต้แถบสรุปว่าตรงกับ CHANGELOG
 
-> สำหรับผู้พัฒนา: เวลาออกเวอร์ชันใหม่ เปลี่ยนเลขให้ตรงกันใน `version.json`, `APP_VERSION` ใน `assets/app.js`, `?v=` และ footer ใน `index.html`, `BACKEND_VERSION` ใน `Code.gs` (ถ้าแก้หลังบ้าน), หัว README และเพิ่มรายการใน `CHANGELOG.md`
+> สำหรับผู้พัฒนา: เวลาออกเวอร์ชันใหม่ เปลี่ยนเลขให้ตรงกันใน `version.json`, `APP_VERSION` / `<meta name="version">` / footer ใน `index.html`, `BACKEND_VERSION` ใน `Code.gs` (ถ้าแก้หลังบ้าน), หัว README และเพิ่มรายการใน `CHANGELOG.md`
 
 ---
 
@@ -139,7 +137,8 @@ window.CHECKIN_CONFIG = {
 
 | อาการ | วิธีแก้ |
 |---|---|
-| ขึ้น "โหมดทดลอง" | ยังไม่ได้ใส่ `APPS_SCRIPT_URL` ใน `config.js` |
+| หน้าเว็บไม่มีสี/ดีไซน์ ตัวหนังสือเรียงยาว | ใช้ `index.html` ตั้งแต่ v1.0.1 ขึ้นไป (รวมทุกอย่างในไฟล์เดียว) และตรวจว่าไฟล์อยู่ชั้นนอกสุดของ repo |
+| ขึ้น "โหมดทดลอง" | ยังไม่ได้ใส่ `APPS_SCRIPT_URL` ในส่วนตั้งค่าของ `index.html` |
 | "เชื่อมต่อ Google Sheets ไม่ได้" | URL ต้องลงท้ายด้วย `/exec` และ Deploy เป็น Anyone · ลองเปิด `URL?action=ping` ในเบราว์เซอร์ ต้องเห็น `"ok":true` |
 | แก้ Code.gs แล้วไม่เปลี่ยน | ต้อง Deploy เป็น **New version** ทุกครั้ง (ข้อ "อัปเดตเวอร์ชัน") |
 | เวลา/วันที่เพี้ยน | ตั้ง Time zone ของโปรเจกต์ Apps Script เป็น Bangkok |
