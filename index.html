@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f7a55">
+<meta name="version" content="1.0.0">
+<meta name="description" content="ระบบเช็คชื่อเข้าเรียนออนไลน์ คลาส Claude AI — บันทึกลง Google Sheets">
+<title>เช็คชื่อเข้าเรียน · Claude AI Class</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230f7a55'/%3E%3Cpath d='M12 4l1.6 5 5 1.6-5 1.6L12 17.2l-1.6-5-5-1.6 5-1.6z' fill='%23c6f36b'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@300;400;500;600;700&family=Bai+Jamjuree:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css?v=1.0.0">
+<script src="config.js?v=1.0.0"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
+<script src="assets/app.js?v=1.0.0" defer></script>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2.5l1.9 6.1 6.1 1.9-6.1 1.9L12 18.5l-1.9-6.1L4 10.5l6.1-1.9L12 2.5z" fill="#c6f36b"/><circle cx="18.5" cy="18.5" r="2" fill="#fff"/></svg>
+        </div>
+        <div style="min-width:0"><small>Class Attendance</small><b id="classTitle">Claude AI Class</b></div>
+      </div>
+      <button class="icon-btn" id="adminBtn" aria-label="สำหรับผู้สอน">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+        <span class="lbl" id="adminLbl">ผู้สอน</span>
+      </button>
+    </div>
+    <div class="hero-main">
+      <div>
+        <h1>เช็คชื่อเข้าเรียน<br><span>Claude AI</span></h1>
+        <p id="startInfo">แตะชื่อของคุณ แล้วเซ็นชื่อเพื่อยืนยันการเข้าเรียน</p>
+      </div>
+      <div class="clock"><div class="t" id="clock">--:--</div><div class="d" id="today"></div></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="stats" aria-label="สรุป">
+    <div class="stat"><div class="k"><i style="background:var(--g700)"></i>ผู้เรียนทั้งหมด</div><div class="v" id="sTotal">0</div></div>
+    <div class="stat"><div class="k"><i style="background:var(--g500)"></i>ตรงเวลา</div><div class="v" id="sOn">0</div></div>
+    <div class="stat"><div class="k"><i style="background:var(--amber)"></i>มาสาย</div><div class="v" id="sLate">0</div></div>
+    <div class="stat"><div class="k"><i style="background:#c9d8d0"></i>ยังไม่มา</div><div class="v" id="sAbs">0</div></div>
+  </section>
+  <div class="progress"><div class="bar"><span class="on" id="barOn" style="width:0"></span><span class="late" id="barLate" style="width:0"></span></div><b id="pct">0%</b></div>
+  <div class="sync" id="sync"><span class="dot"></span><span id="syncText">กำลังเชื่อมต่อ Google Sheets…</span><button type="button" id="refreshBtn">รีเฟรช</button><span style="margin-left:auto" id="verText">เว็บ v1.0.0</span></div>
+
+  <div class="banner info" id="demoBanner">ℹ️<div><b>โหมดทดลอง</b> — ยังไม่ได้ใส่ <code>APPS_SCRIPT_URL</code> ในไฟล์ <code>config.js</code> ข้อมูลจะหายเมื่อรีเฟรช ดูวิธีตั้งค่าใน README.md</div></div>
+  <div class="banner info" id="updateBanner">🆕<div style="flex:1"><b id="updateText">มีเวอร์ชันใหม่</b> — แตะเพื่อโหลดเวอร์ชันล่าสุด</div><button class="btn btn-primary" id="updateBtn" style="height:36px;font-size:13px">โหลดใหม่</button></div>
+  <div class="banner warn" id="mismatchBanner">🔧<div><b>เวอร์ชันไม่ตรงกัน</b> — <span id="mismatchText"></span></div></div>
+  <div class="banner err" id="errBanner">⚠️<div><b>เชื่อมต่อ Google Sheets ไม่ได้</b> — ตรวจสอบอินเทอร์เน็ต หรือ URL ของ Apps Script ใน config.js ระบบจะลองใหม่อัตโนมัติ</div></div>
+
+  <div class="toolbar">
+    <div class="row">
+      <label class="search" id="searchWrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="ค้นหาชื่อ หรือรหัส…" autocomplete="off" enterkeyhint="search" aria-label="ค้นหาชื่อ">
+        <button class="clear" id="qClear" type="button" aria-label="ล้างคำค้นหา">✕</button>
+      </label>
+      <div class="chips" role="group" aria-label="ตัวกรอง">
+        <button class="chip" data-f="all" aria-pressed="true">ทั้งหมด</button>
+        <button class="chip" data-f="pending" aria-pressed="false">ยังไม่มา</button>
+        <button class="chip" data-f="done" aria-pressed="false">มาแล้ว</button>
+      </div>
+      <div class="date-pill" id="datePill" hidden>📅 <input type="date" id="dateInput" aria-label="วันที่ของคลาส"></div>
+    </div>
+  </div>
+
+  <section class="list" id="list" aria-live="polite"></section>
+</main>
+
+<footer>Claude AI Class · ระบบเช็คชื่อออนไลน์ v1.0.0 · บันทึกลง Google Sheets · ใช้ได้ทั้งมือถือ แท็บเล็ต และคอมพิวเตอร์</footer>
+
+<div class="overlay" id="ovCheck" role="dialog" aria-modal="true" aria-labelledby="ckName"><div class="sheet" id="sheetCheck"></div></div>
+<div class="overlay" id="ovAdmin" role="dialog" aria-modal="true" aria-label="จัดการคลาส"><div class="sheet wide" id="sheetAdmin"></div></div>
+<input type="file" id="fileInput" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" hidden>
+<div class="toast" id="toast" role="status"></div>
+</body>
+</html>
