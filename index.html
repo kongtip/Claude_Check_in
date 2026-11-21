@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1257c4">
-<meta name="version" content="1.2.0">
-<meta name="description" content="ระบบเช็คชื่อเข้าเรียนออนไลน์ คลาส Claude AI — บันทึกลง Google Sheets">
+<meta name="version" content="2.0.0">
+<meta name="description" content="ระบบเช็คชื่อเข้าเรียนออนไลน์ คลาส Claude AI — ล็อกอินด้วย Google, ข้อมูลเก็บใน Supabase">
 <title>เช็คชื่อเข้าเรียน · Claude AI Class</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%231257c4'/%3E%3Cpath d='M12 4l1.6 5 5 1.6-5 1.6L12 17.2l-1.6-5-5-1.6 5-1.6z' fill='%23a5e4ff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -259,26 +259,111 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 0 calc(2
 .pin-input:focus{border-color:var(--g500);box-shadow:0 0 0 4px rgba(59,130,246,.15)}
 .link-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
 .sig-view a{color:var(--g700);font-weight:600}
+
+/* ---------- v2.0.0: login, account, claim, my card ---------- */
+[hidden]{display:none!important}
+.login{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:calc(24px + var(--sat)) 18px calc(24px + var(--sab));position:relative;overflow:hidden;
+  background:linear-gradient(140deg,var(--g800) 0%,var(--g700) 45%,var(--teal) 100%)}
+.login::before,.login::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.login::before{width:520px;height:520px;right:-160px;top:-200px;background:radial-gradient(circle,rgba(165,228,255,.55),transparent 65%)}
+.login::after{width:420px;height:420px;left:-140px;bottom:-200px;background:radial-gradient(circle,rgba(106,165,255,.5),transparent 65%)}
+.login-card{position:relative;z-index:1;width:100%;max-width:420px;background:#fff;border-radius:28px;padding:30px 26px 24px;box-shadow:0 30px 80px -24px rgba(6,26,58,.55);text-align:center}
+.login-card .logo{margin:0 auto 16px;width:58px;height:58px;border-radius:18px;background:linear-gradient(135deg,var(--g700),var(--teal));border:0}
+.login-card h1{font-size:28px;line-height:1.15;color:var(--g900)}
+.login-card h1 span{color:var(--g600)}
+.login-card p{color:var(--muted);font-size:15px;line-height:1.6;margin:10px 0 22px}
+.btn-google{width:100%;height:54px;border-radius:15px;border:1.5px solid var(--line);background:#fff;color:var(--ink);font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:var(--shadow);transition:background .15s,transform .1s}
+.btn-google:hover{background:var(--g50)}
+.btn-google:active{transform:scale(.98)}
+.btn-google:disabled{opacity:.6}
+.login-note{font-size:12.5px;color:var(--muted);margin-top:16px;line-height:1.55}
+.login-foot{margin-top:18px;display:flex;justify-content:center;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
+.login-foot .ver-pill{color:var(--g700);background:var(--g50);border-color:var(--g200);margin:0}
+.setup-box{text-align:left;background:var(--amber-bg);border:1px solid #f6d999;color:#6b4a00;border-radius:14px;padding:12px 14px;font-size:13.5px;line-height:1.55;margin-bottom:14px}
+
+.who{display:flex;align-items:center;gap:8px}
+.who .me{height:44px;display:flex;align-items:center;gap:8px;padding:0 6px 0 6px;border-radius:14px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.14);color:#fff;backdrop-filter:blur(6px);max-width:260px}
+.who .me .ini{width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,.9);color:var(--g800);display:grid;place-items:center;font:700 14px "Bai Jamjuree"}
+.who .me .em{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:6px}
+.role-tag{font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--lime);color:var(--g900);margin-left:2px}
+
+.mycard{margin-top:14px;background:#fff;border:1px solid var(--g200);border-radius:24px;padding:18px;box-shadow:var(--shadow);display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.mycard .avatar{width:60px;height:60px;font-size:22px;border-radius:18px}
+.mycard .info .n{font-size:20px;font-family:"Bai Jamjuree"}
+.mycard .info .m{font-size:14px}
+.mycard .btn{height:54px;font-size:16px;padding:0 22px}
+.mycard.done{background:linear-gradient(90deg,var(--ok-bg),#fff 70%);border-color:#bfe8cf}
+.mycard.done .avatar{background:linear-gradient(135deg,#22c55e,var(--ok));color:#fff;border:0}
+.section-title{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:22px 0 6px}
+.section-title h2{font-size:18px}
+.section-title small{color:var(--muted);font-size:13px}
+
+.claim{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;box-shadow:var(--shadow)}
+.claim h2{font-size:20px}
+.claim p{color:var(--muted);margin:6px 0 14px;font-size:14px;line-height:1.6}
+.claim-list{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px;max-height:60vh;overflow:auto}
+.claim-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:16px;background:#fff;text-align:left;width:100%}
+.claim-item:hover:not(:disabled){border-color:var(--g400);background:var(--g50)}
+.claim-item:disabled{opacity:.5;cursor:not-allowed}
+.claim-item .avatar{width:40px;height:40px;font-size:15px;border-radius:12px}
+.claim-item .n{font-weight:600}
+.claim-item .m{font-size:12.5px;color:var(--muted)}
+.linked-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--g500);margin-right:4px;vertical-align:middle}
+.card .m .acct{font-size:12px;color:var(--muted)}
+@media (min-width:640px){ .claim-list{grid-template-columns:1fr 1fr} }
+
+/* v2.0.0 responsive header fixes */
+.topbar .brand{flex:1;min-width:0}
+.who{flex:none}
+.sync{flex-wrap:wrap;row-gap:4px}
+@media (max-width:639px){
+  .who .me .em{display:none}
+  .who .me{padding:0 6px}
+  .section-title{flex-direction:column;align-items:flex-start;gap:2px}
+  .sync #verText{margin-left:0;width:100%}
+  .topbar .brand small{display:none}
+}
+@media (min-width:640px) and (max-width:900px){ .who .me{max-width:200px} }
 </style>
 <script>
 /* =====================================================================
  * ตั้งค่า — แก้เฉพาะส่วนนี้ (บน GitHub กดรูปดินสอ ✏️ เพื่อแก้ไฟล์นี้)
  *
- * APPS_SCRIPT_URL : URL ของ Google Apps Script Web App (ลงท้ายด้วย /exec)
- *                   ถ้าเว้นว่าง หน้าเว็บจะเปิดในโหมดทดลอง (ไม่บันทึกจริง)
- * CLASS_TITLE     : ชื่อคลาสที่แสดงก่อนโหลดข้อมูลจาก Google Sheet
- * POLL_SECONDS    : ดึงข้อมูลใหม่จาก Google Sheet ทุกกี่วินาที
+ * SUPABASE_URL : URL ของโปรเจกต์ Supabase
+ * SUPABASE_KEY : Publishable key (sb_publishable_...) — เปิดเผยในหน้าเว็บได้
+ *                ข้อมูลถูกป้องกันด้วย Row Level Security ในฐานข้อมูล
+ *                ห้ามใส่ secret key / service_role key ที่นี่เด็ดขาด
+ * POLL_SECONDS : ดึงข้อมูลใหม่ทุกกี่วินาที
  * ===================================================================== */
 window.CHECKIN_CONFIG = {
-  APPS_SCRIPT_URL: "",
+  SUPABASE_URL: "https://zjzukimhnjtgwayezpkh.supabase.co",
+  SUPABASE_KEY: "sb_publishable_zPLMmTH2MEJj8A9l3afrVg_-JVVUbnY",
   CLASS_TITLE: "Claude AI Class",
   POLL_SECONDS: 15
 };
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
 </head>
 <body>
+<!-- ================= Login ================= -->
+<section class="login" id="loginView" hidden>
+  <div class="login-card">
+    <div class="logo" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M12 2.5l1.9 6.1 6.1 1.9-6.1 1.9L12 18.5l-1.9-6.1L4 10.5l6.1-1.9L12 2.5z" fill="#fff"/><circle cx="18.5" cy="18.5" r="2" fill="#a5e4ff"/></svg></div>
+    <h1>เช็คชื่อเข้าเรียน<br><span id="loginTitle">Claude AI Class</span></h1>
+    <p>เข้าสู่ระบบด้วยบัญชี Gmail ของคุณ<br>เพื่อเช็คชื่อและเซ็นชื่อเข้าเรียน</p>
+    <div class="setup-box" id="setupBox" hidden>⚙️ ยังไม่ได้ตั้งค่า <code>SUPABASE_URL</code> / <code>SUPABASE_KEY</code> ในไฟล์ index.html</div>
+    <button class="btn-google" id="googleBtn" type="button">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+      <span id="googleLbl">เข้าสู่ระบบด้วย Google</span>
+    </button>
+    <div class="login-note">ระบบใช้ชื่อและอีเมลจากบัญชี Google เพื่อยืนยันตัวตนเท่านั้น<br>ผู้เรียนเลือกชื่อตัวเองได้ครั้งเดียว และเช็คชื่อได้เฉพาะชื่อตัวเอง</div>
+    <div class="login-foot"><button class="ver-pill" id="verPillLogin" type="button" aria-label="ดูประวัติเวอร์ชัน"><span class="vtxt">v2.0.0</span><span class="new" aria-hidden="true"></span></button><span>ระบบเช็คชื่อออนไลน์</span></div>
+  </div>
+</section>
 
+<!-- ================= App ================= -->
+<div id="appView" hidden>
 <header class="hero">
   <div class="wrap">
     <div class="topbar">
@@ -287,17 +372,20 @@ window.CHECKIN_CONFIG = {
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2.5l1.9 6.1 6.1 1.9-6.1 1.9L12 18.5l-1.9-6.1L4 10.5l6.1-1.9L12 2.5z" fill="#a5e4ff"/><circle cx="18.5" cy="18.5" r="2" fill="#fff"/></svg>
         </div>
         <div style="min-width:0"><small>Class Attendance</small><b id="classTitle">Claude AI Class</b></div>
-        <button class="ver-pill" id="verPill" type="button" aria-label="ดูประวัติเวอร์ชัน"><span id="verPillText">v1.2.0</span><span class="new" aria-hidden="true"></span></button>
+        <button class="ver-pill" id="verPill" type="button" aria-label="ดูประวัติเวอร์ชัน"><span class="vtxt">v2.0.0</span><span class="new" aria-hidden="true"></span></button>
       </div>
-      <button class="icon-btn" id="adminBtn" aria-label="สำหรับผู้สอน">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
-        <span class="lbl" id="adminLbl">ผู้สอน</span>
-      </button>
+      <div class="who">
+        <button class="icon-btn" id="adminBtn" hidden aria-label="จัดการคลาส">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h7"/><circle cx="18" cy="16" r="3"/></svg>
+          <span class="lbl">จัดการคลาส</span>
+        </button>
+        <button class="me" id="meBtn" type="button" aria-label="บัญชีของฉัน"><span class="ini" id="meIni">?</span><span class="em" id="meEmail"></span></button>
+      </div>
     </div>
     <div class="hero-main">
       <div>
         <h1>เช็คชื่อเข้าเรียน<br><span>Claude AI</span></h1>
-        <p id="startInfo">แตะชื่อของคุณ แล้วเซ็นชื่อเพื่อยืนยันการเข้าเรียน</p>
+        <p id="startInfo"></p>
       </div>
       <div class="clock"><div class="t" id="clock">--:--</div><div class="d" id="today"></div></div>
     </div>
@@ -312,18 +400,34 @@ window.CHECKIN_CONFIG = {
     <div class="stat"><div class="k"><i style="background:#c9d3e0"></i>ยังไม่มา</div><div class="v" id="sAbs">0</div></div>
   </section>
   <div class="progress"><div class="bar"><span class="on" id="barOn" style="width:0"></span><span class="late" id="barLate" style="width:0"></span></div><b id="pct">0%</b></div>
-  <div class="sync" id="sync"><span class="dot"></span><span id="syncText">กำลังเชื่อมต่อ Google Sheets…</span><button type="button" id="refreshBtn">รีเฟรช</button><span style="margin-left:auto" id="verText">เว็บ v1.2.0</span></div>
+  <div class="sync" id="sync"><span class="dot"></span><span id="syncText">กำลังเชื่อมต่อ…</span><button type="button" id="refreshBtn">รีเฟรช</button><span style="margin-left:auto" id="verText">เว็บ v2.0.0</span></div>
 
-  <div class="banner info" id="demoBanner">ℹ️<div><b>โหมดทดลอง</b> — ยังไม่ได้ใส่ <code>APPS_SCRIPT_URL</code> ในส่วนตั้งค่าของไฟล์ <code>index.html</code> ข้อมูลจะหายเมื่อรีเฟรช ดูวิธีตั้งค่าใน README.md</div></div>
   <div class="banner info" id="updateBanner">🆕<div style="flex:1"><b id="updateText">มีเวอร์ชันใหม่</b> — แตะเพื่อโหลดเวอร์ชันล่าสุด</div><button class="btn btn-primary" id="updateBtn" style="height:36px;font-size:13px">โหลดใหม่</button></div>
   <div class="banner warn" id="mismatchBanner">🔧<div><b>เวอร์ชันไม่ตรงกัน</b> — <span id="mismatchText"></span></div></div>
-  <div class="banner err" id="errBanner">⚠️<div><b>เชื่อมต่อ Google Sheets ไม่ได้</b> — ตรวจสอบอินเทอร์เน็ต หรือ APPS_SCRIPT_URL ในไฟล์ index.html ระบบจะลองใหม่อัตโนมัติ</div></div>
+  <div class="banner err" id="errBanner">⚠️<div><b>เชื่อมต่อฐานข้อมูลไม่ได้</b> — ตรวจสอบอินเทอร์เน็ต ระบบจะลองใหม่อัตโนมัติ</div></div>
 
+  <!-- Student: pick your name (first login) -->
+  <section class="claim" id="claimView" hidden>
+    <h2>👋 ยินดีต้อนรับ! เลือกชื่อของคุณ</h2>
+    <p>บัญชี <b id="claimEmail"></b> ยังไม่ได้ผูกกับชื่อในคลาส เลือกชื่อของคุณ <b>ได้ครั้งเดียว</b> ถ้าเลือกผิดหรือไม่พบชื่อ แจ้งผู้สอนให้แก้ไข</p>
+    <label class="search" id="claimSearchWrap">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="claimQ" type="search" placeholder="พิมพ์ชื่อของคุณ…" autocomplete="off" aria-label="ค้นหาชื่อ">
+    </label>
+    <div class="claim-list" id="claimList"></div>
+  </section>
+
+  <!-- Student: my card -->
+  <section id="myView" hidden>
+    <div class="mycard" id="myCard"></div>
+  </section>
+
+  <div class="section-title" id="listTitle"><h2 id="listHeading">รายชื่อในคลาส</h2><small id="listSub"></small></div>
   <div class="toolbar">
     <div class="row">
       <label class="search" id="searchWrap">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <input id="q" type="search" placeholder="ค้นหาชื่อ หรือรหัส…" autocomplete="off" enterkeyhint="search" aria-label="ค้นหาชื่อ">
+        <input id="q" type="search" placeholder="ค้นหาชื่อ หรือกลุ่ม…" autocomplete="off" enterkeyhint="search" aria-label="ค้นหาชื่อ">
         <button class="clear" id="qClear" type="button" aria-label="ล้างคำค้นหา">✕</button>
       </label>
       <div class="chips" role="group" aria-label="ตัวกรอง">
@@ -334,11 +438,10 @@ window.CHECKIN_CONFIG = {
       <div class="date-pill" id="datePill" hidden>📅 <input type="date" id="dateInput" aria-label="วันที่ของคลาส"></div>
     </div>
   </div>
-
   <section class="list" id="list" aria-live="polite"></section>
 </main>
-
-<footer>Claude AI Class · ระบบเช็คชื่อออนไลน์ v1.2.0 · บันทึกลง Google Sheets · ใช้ได้ทั้งมือถือ แท็บเล็ต และคอมพิวเตอร์</footer>
+<footer>Claude AI Class · ระบบเช็คชื่อออนไลน์ v2.0.0 · Supabase + Google Login · ใช้ได้ทั้งมือถือ แท็บเล็ต และคอมพิวเตอร์</footer>
+</div>
 
 <div class="overlay" id="ovCheck" role="dialog" aria-modal="true" aria-labelledby="ckName"><div class="sheet" id="sheetCheck"></div></div>
 <div class="overlay" id="ovVer" role="dialog" aria-modal="true" aria-label="ประวัติเวอร์ชัน"><div class="sheet" id="sheetVer"></div></div>
@@ -346,258 +449,267 @@ window.CHECKIN_CONFIG = {
 <input type="file" id="fileInput" accept=".csv,.xlsx,.xls,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" hidden>
 <div class="toast" id="toast" role="status"></div>
 <script>
-/* Claude AI Class — Attendance check-in (GitHub Pages + Google Apps Script) */
+/* Claude AI Class — Attendance check-in v2 (GitHub Pages + Supabase + Google login) */
 (() => {
 "use strict";
 
 /** เลขเวอร์ชันของหน้าเว็บ — เปลี่ยนพร้อม version.json, <meta name="version">, footer และ CHANGELOG.md */
-const APP_VERSION = "1.2.0";
-/** เวอร์ชันต่ำสุดของ Code.gs ที่หน้าเว็บนี้ใช้ร่วมได้ */
-const MIN_BACKEND = "1.0.0";
-/** ประวัติเวอร์ชัน (แสดงเมื่อกดป้ายเวอร์ชันบนหัวเว็บ) — เพิ่มรายการใหม่ไว้บนสุด */
+const APP_VERSION = "2.0.0";
+/** เวอร์ชันต่ำสุดของฐานข้อมูล Supabase (public.backend_version()) ที่หน้าเว็บนี้ใช้ร่วมได้ */
+const MIN_BACKEND = "2.0.0";
+/** ประวัติเวอร์ชัน — เพิ่มรายการใหม่ไว้บนสุด */
 const RELEASES = [
+  { v:"2.0.0", date:"2026-11-21", items:[
+    "ย้ายฐานข้อมูลและระบบล็อกอินทั้งหมดไปที่ Supabase",
+    "หน้าล็อกอินด้วยบัญชี Google (Gmail)",
+    "ผู้เรียนเลือกชื่อตัวเองครั้งเดียว แล้วเช็คชื่อได้เฉพาะชื่อตัวเอง",
+    "ผู้สอนจัดการคลาสด้วยบัญชี Google แทน PIN",
+    "ผู้เรียนเห็นเฉพาะชื่อและสถานะของเพื่อน ลายเซ็นเห็นได้เฉพาะเจ้าของและผู้สอน"
+  ]},
   { v:"1.2.0", date:"2026-11-14", items:[
     "เปลี่ยนโทนสีพื้นหลังและปุ่มหลักจากเขียวเป็นน้ำเงิน-ขาว",
-    "สถานะตรงเวลายังเป็นสีเขียว และมาสายเป็นสีเหลืองส้ม เพื่อให้อ่านความหมายได้ทันที"
+    "สถานะตรงเวลายังเป็นสีเขียว และมาสายเป็นสีเหลืองส้ม"
   ]},
   { v:"1.1.0", date:"2026-11-14", items:[
     "ป้ายเวอร์ชันบนหัวเว็บ กดเพื่อดูประวัติเวอร์ชันและสถานะการอัปเดต",
-    "จุดสีส้มบนป้ายเวอร์ชันเมื่อมีเวอร์ชันใหม่บน GitHub",
-    "ตรวจความเข้ากันได้กับ Apps Script ด้วยเวอร์ชันขั้นต่ำ"
+    "จุดสีส้มบนป้ายเวอร์ชันเมื่อมีเวอร์ชันใหม่บน GitHub"
   ]},
   { v:"1.0.1", date:"2026-11-14", items:[
-    "รวมดีไซน์ โค้ด และการตั้งค่าไว้ใน index.html ไฟล์เดียว แก้หน้าเว็บไม่มีดีไซน์บน GitHub Pages"
+    "รวมดีไซน์ โค้ด และการตั้งค่าไว้ใน index.html ไฟล์เดียว"
   ]},
   { v:"1.0.0", date:"2026-11-14", items:[
-    "เช็คชื่อด้วย Approve + ลายเซ็น บันทึกลง Google Sheets ทันที",
-    "สถานะตรงเวลา / มาสาย จากเวลาเซิร์ฟเวอร์ Google",
-    "โหมดผู้สอน: นำเข้ารายชื่อ CSV / Excel / Google Forms, ตั้งเวลาเรียน, ส่งออก CSV",
+    "เช็คชื่อด้วย Approve + ลายเซ็น, สถานะตรงเวลา / มาสาย",
     "รองรับมือถือ แท็บเล็ต และคอมพิวเตอร์"
   ]}
 ];
-const cmpVer = (a, b) => { const x = String(a).split(".").map(Number), y = String(b).split(".").map(Number); for (let i = 0; i < 3; i++){ const d = (x[i]||0) - (y[i]||0); if (d) return d; } return 0; };
 
 const CFG = window.CHECKIN_CONFIG || {};
-const API = String(CFG.APPS_SCRIPT_URL || "").trim();
 const POLL_MS = Math.max(5, Number(CFG.POLL_SECONDS) || 15) * 1000;
+const cmpVer = (a, b) => { const x = String(a).split(".").map(Number), y = String(b).split(".").map(Number); for (let i = 0; i < 3; i++){ const d = (x[i]||0) - (y[i]||0); if (d) return d; } return 0; };
 
 /* ---------- Helpers ---------- */
 const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const pad = n => String(n).padStart(2, "0");
-const dateKey = d => `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-const fmtTime = ms => { const d = new Date(ms); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; };
-const fmtTimeSec = ms => { const d = new Date(ms); return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`; };
-const thDate = (d, long = true) => d.toLocaleDateString("th-TH", long ? {weekday:"long", day:"numeric", month:"long", year:"numeric"} : {day:"numeric", month:"short", year:"numeric"});
 const keyToDate = k => { const [y,m,d] = String(k).split("-").map(Number); return new Date(y, m-1, d); };
+const thDate = (d, long = true) => d.toLocaleDateString("th-TH", long ? {weekday:"long", day:"numeric", month:"long", year:"numeric"} : {day:"numeric", month:"short", year:"numeric"});
 const initials = name => { const p = String(name).trim().split(/\s+/); return ((p[0]||"?")[0] + (p[1] ? p[1][0] : "")).toUpperCase(); };
 const nameKey = n => String(n || "").replace(/\s/g, "").toLowerCase();
-const ss = { get(k){ try{ return sessionStorage.getItem(k); }catch{ return null; } }, set(k,v){ try{ v == null ? sessionStorage.removeItem(k) : sessionStorage.setItem(k, v); }catch{} } };
 
 const S = {
-  demo: !API, isAdmin: false, pin: "", sheetUrl: "", loaded: false, err: false, busy: false,
-  roster: [], checkins: {}, localSigs: {},
-  settings: { title: CFG.CLASS_TITLE || "Claude AI Class", startTime: "09:00", lateAfter: 15 },
-  date: dateKey(new Date()), pickedDate: "", offset: 0, lastSync: 0, backendVersion: "", latest: "",
-  filter: "all", q: "", importRows: null
+  sb: null, session: null, profile: null, isAdmin: false,
+  board: [], details: {}, rosterAdmin: {},            // details/rosterAdmin: admin-only extras
+  settings: { title: CFG.CLASS_TITLE || "Claude AI Class", start_time: "09:00:00", late_after: 15, timezone: "Asia/Bangkok" },
+  date: "", pickedDate: "", offset: 0, lastSync: 0, err: false, busy: false, loaded: false,
+  filter: "all", q: "", claimQ: "", importRows: null, latest: "", backendVersion: ""
 };
+const tz = () => S.settings.timezone || "Asia/Bangkok";
 const now = () => Date.now() + S.offset;
+const fmtT = (ms, sec = false) => new Date(ms).toLocaleTimeString("en-GB", { timeZone: tz(), hour:"2-digit", minute:"2-digit", ...(sec ? {second:"2-digit"} : {}) });
+const localDateKey = ms => new Date(ms).toLocaleDateString("en-CA", { timeZone: tz() });
+const startHM = () => String(S.settings.start_time || "09:00").slice(0, 5);
+function addMin(t, m){ const [h, mm] = String(t).split(":").map(Number); const d = new Date(2000,0,1,h,mm + Number(m||0)); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+function statusPreview(ms){ return fmtT(ms) > addMin(startHM(), S.settings.late_after) ? "late" : "on"; }
 
-/* ---------- Backend ---------- */
-async function api(action, payload = {}){
-  if (S.demo) return demoApi(action, payload);
-  const res = await fetch(API, {
-    method: "POST",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },   // simple request: no CORS preflight
-    body: JSON.stringify({ action, ...payload }),
-    redirect: "follow"
-  });
-  let j; try{ j = await res.json(); }catch{ j = { ok:false, error:"bad_response" }; }
-  if (!j.ok) throw j;
-  return j;
-}
-async function fetchState(){
-  if (S.demo) return demoApi("state", { date: S.pickedDate });
-  const sep = API.includes("?") ? "&" : "?";
-  const url = `${API}${sep}action=state${S.isAdmin && S.pickedDate ? "&date=" + encodeURIComponent(S.pickedDate) : ""}&_=${Date.now()}`;
-  const res = await fetch(url, { redirect: "follow" });
-  const j = await res.json();
-  if (!j.ok) throw j;
-  return j;
-}
-
-/* ---------- Demo backend (used when APPS_SCRIPT_URL is empty) ---------- */
-const D = { roster: [], att: [], settings: { ...S.settings } };
-function demoApi(action, p){
-  const today = dateKey(new Date());
-  const err = (error, message) => { throw { ok:false, error, message }; };
-  const pinOk = () => { if (String(p.pin) !== "1234") err("bad_pin", "PIN ไม่ถูกต้อง (โหมดทดลองใช้ 1234)"); };
-  switch (action){
-    case "state": { const date = p.date || today;
-      return { ok:true, version:APP_VERSION, today, date, now:Date.now(), settings:D.settings, roster:D.roster, checkins:D.att.filter(a => a.date === date) }; }
-    case "verifyPin": pinOk(); return { ok:true, sheetUrl:"" };
-    case "checkin": {
-      const r = D.roster.find(x => x.id === p.rosterId); if (!r) err("not_found");
-      if (D.att.some(a => a.date === today && a.rosterId === r.id)) err("already_checked_in");
-      const at = Date.now(); const rec = { rosterId:r.id, name:r.name, date:today, time:fmtTimeSec(at), at, status:statusFor(at, today), signatureUrl:"", device:p.device };
-      D.att.push(rec); return { ok:true, record:rec };
-    }
-    case "importRoster": { pinOk(); if (p.mode === "replace") D.roster = [];
-      const have = new Set(D.roster.map(r => nameKey(r.name))); let order = D.roster.length, added = 0;
-      p.rows.forEach(r => { if (have.has(nameKey(r.name))) return; have.add(nameKey(r.name)); D.roster.push({ id:"st-" + Math.random().toString(36).slice(2,10), name:r.name, code:r.code||"", group:r.group||"", order:++order }); added++; });
-      return { ok:true, added, skipped:p.rows.length - added }; }
-    case "addStudent": pinOk(); return demoApi("importRoster", { pin:p.pin, mode:"append", rows:[p.student] });
-    case "saveSettings": pinOk(); D.settings = { ...D.settings, ...p.settings }; return { ok:true };
-    case "undo": pinOk(); D.att = D.att.filter(a => !(a.date === p.date && a.rosterId === p.rosterId)); return { ok:true };
-    case "resetDay": pinOk(); D.att = D.att.filter(a => a.date !== p.date); return { ok:true };
-    case "clearRoster": pinOk(); D.roster = []; return { ok:true };
-  }
-  err("unknown_action");
-}
-
-/* ---------- Toast & clock ---------- */
+/* ---------- Toast, clock ---------- */
 let toastT;
-function toast(msg){ const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 2800); }
-function tick(){ const n = new Date(now()); $("#clock").textContent = fmtTimeSec(n); $("#today").textContent = thDate(n); }
-tick(); setInterval(tick, 1000);
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 3000); }
+function tick(){ const n = now(); $("#clock").textContent = fmtT(n, true); $("#today").textContent = new Date(n).toLocaleDateString("th-TH", { timeZone: tz(), weekday:"long", day:"numeric", month:"long", year:"numeric" }); }
+setInterval(() => { if (!$("#appView").hidden) tick(); }, 1000);
 
-/* ---------- Status ---------- */
-function addMin(t, m){ const [h, mm] = String(t || "09:00").split(":").map(Number); const d = new Date(2000,0,1,h,mm + Number(m||0)); return `${pad(d.getHours())}:${pad(d.getMinutes())}`; }
-function statusFor(ms, date = S.date){
-  const [h, m] = String(S.settings.startTime || "09:00").split(":").map(Number);
-  const limit = keyToDate(date); limit.setHours(h, m + Number(S.settings.lateAfter || 0), 59, 999);
-  return ms > limit.getTime() ? "late" : "on";
+/* ---------- Error messages ---------- */
+const ERR = {
+  not_your_name: "เช็คชื่อได้เฉพาะชื่อของคุณเท่านั้น",
+  already_checked_in: "ชื่อนี้เช็คชื่อวันนี้ไปแล้ว",
+  already_linked: "บัญชีนี้ผูกกับชื่อในคลาสไปแล้ว",
+  taken: "ชื่อนี้มีบัญชีอื่นเลือกไปแล้ว — แจ้งผู้สอน",
+  bad_signature: "ลายเซ็นไม่ถูกต้อง ลองเซ็นใหม่",
+  not_found: "ไม่พบรายชื่อนี้แล้ว",
+  not_authenticated: "หมดเวลาการเข้าสู่ระบบ กรุณาล็อกอินใหม่"
+};
+function errText(e){
+  const m = String((e && (e.message || e.error_description || e.details)) || e || "");
+  for (const k of Object.keys(ERR)) if (m.includes(k)) return ERR[k];
+  if (/duplicate key|unique/i.test(m)) return "มีชื่อนี้อยู่แล้ว";
+  if (/row-level security|permission denied/i.test(m)) return "บัญชีนี้ไม่มีสิทธิ์ทำรายการนี้";
+  if (/Failed to fetch|NetworkError/i.test(m)) return "เชื่อมต่ออินเทอร์เน็ตไม่ได้";
+  return "ทำรายการไม่สำเร็จ ลองอีกครั้ง";
 }
 
-/* ---------- Data loading ---------- */
+/* ---------- Supabase ---------- */
+function initSupabase(){
+  const url = String(CFG.SUPABASE_URL || "").trim(), key = String(CFG.SUPABASE_KEY || "").trim();
+  if (!url || !key || !window.supabase){ $("#setupBox").hidden = false; $("#googleBtn").disabled = true; return null; }
+  return window.supabase.createClient(url, key, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
+}
+async function rpc(fn, args){ const { data, error } = await S.sb.rpc(fn, args || {}); if (error) throw error; return data; }
+
+async function signIn(){
+  const b = $("#googleBtn"); b.disabled = true; $("#googleLbl").textContent = "กำลังไปที่ Google…";
+  const { error } = await S.sb.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: location.origin + location.pathname, queryParams: { prompt: "select_account" } }
+  });
+  if (error){ b.disabled = false; $("#googleLbl").textContent = "เข้าสู่ระบบด้วย Google"; toast("เข้าสู่ระบบไม่สำเร็จ: " + errText(error)); }
+}
+async function signOut(){ await S.sb.auth.signOut(); location.hash = ""; }
+
+/* ---------- Views ---------- */
+function showLogin(){ $("#loginView").hidden = false; $("#appView").hidden = true; document.title = "เข้าสู่ระบบ · เช็คชื่อ Claude AI Class"; }
+function showApp(){ $("#loginView").hidden = true; $("#appView").hidden = false; tick(); }
+
 async function load(silent = false){
+  if (!S.session) return;
   try{
-    const st = await fetchState();
-    S.settings = { ...S.settings, ...st.settings };
-    S.roster = (st.roster || []).slice().sort((a, b) => (a.order||0) - (b.order||0));
-    S.checkins = Object.fromEntries((st.checkins || []).map(c => [c.rosterId, c]));
-    S.date = st.date || S.date;
-    if (st.now) S.offset = st.now - Date.now();
-    S.backendVersion = st.version || "ไม่ทราบ";
+    const prof = await rpc("my_profile");
+    S.profile = prof; S.isAdmin = !!prof.is_admin; S.backendVersion = prof.version || "";
+    S.offset = Number(prof.now) - Date.now();
+    const [{ data: st, error: e1 }, board] = await Promise.all([
+      S.sb.from("settings").select("title,start_time,late_after,timezone").eq("id", 1).maybeSingle(),
+      rpc("class_board", { p_date: S.isAdmin && S.pickedDate ? S.pickedDate : null })
+    ]);
+    if (e1) throw e1;
+    if (st) S.settings = { ...S.settings, ...st };
+    S.board = board || [];
+    S.date = S.board[0]?.class_date || (S.isAdmin && S.pickedDate) || prof.today;
+    if (S.isAdmin) await loadAdminExtras();
     S.loaded = true; S.err = false; S.lastSync = Date.now();
     $("#errBanner").classList.remove("show");
   }catch(e){
     console.warn("load failed", e);
-    S.loaded = true; S.err = true;
-    $("#errBanner").classList.add("show");
-    if (!silent) toast("โหลดข้อมูลไม่สำเร็จ");
+    S.err = true; S.loaded = true; $("#errBanner").classList.add("show");
+    if (!silent) toast(errText(e));
   }
-  renderSync(); render();
+  renderAll();
 }
-function renderSync(){
-  const el = $("#sync"); el.classList.toggle("err", S.err);
-  const known = S.backendVersion && S.backendVersion !== "ไม่ทราบ";
-  const mismatch = !S.demo && known && (String(S.backendVersion).split(".")[0] !== APP_VERSION.split(".")[0] || cmpVer(S.backendVersion, MIN_BACKEND) < 0);
-  $("#verText").textContent = `เว็บ v${APP_VERSION}` + (S.demo ? "" : ` · หลังบ้าน ${S.backendVersion ? "v" + S.backendVersion : "…"}`);
-  $("#mismatchBanner").classList.toggle("show", !!mismatch);
-  if (mismatch) $("#mismatchText").textContent = `หน้าเว็บ v${APP_VERSION} แต่ Apps Script เป็น v${S.backendVersion} ซึ่งต้องการหลังบ้านอย่างน้อย v${MIN_BACKEND} — อัปเดต Code.gs แล้ว Deploy เวอร์ชันใหม่ (ดู README ข้อ "อัปเดตเวอร์ชัน")`;
-  $("#syncText").textContent = S.demo ? "โหมดทดลอง · ยังไม่เชื่อม Google Sheets"
-    : S.err ? "เชื่อมต่อไม่ได้ · กำลังลองใหม่"
-    : S.lastSync ? `เชื่อม Google Sheets แล้ว · อัปเดตล่าสุด ${fmtTimeSec(S.lastSync)}` : "กำลังเชื่อมต่อ Google Sheets…";
+async function loadAdminExtras(){
+  const [{ data: ros, error: e1 }, { data: att, error: e2 }] = await Promise.all([
+    S.sb.from("roster").select("id,code,email,user_id"),
+    S.sb.from("attendance").select("roster_id,checked_at,status,signature,device,checked_by").eq("class_date", S.date)
+  ]);
+  if (e1) throw e1; if (e2) throw e2;
+  S.rosterAdmin = Object.fromEntries((ros || []).map(r => [r.id, r]));
+  S.details = Object.fromEntries((att || []).map(a => [a.roster_id, a]));
 }
-setInterval(() => { if (document.visibilityState === "visible" && !S.busy) load(true); }, POLL_MS);
-document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && !S.busy) load(true); });
-
-/* ---------- New-version check (GitHub Pages) ---------- */
-async function checkUpdate(){
-  if (location.protocol === "file:") return;
-  try{
-    const r = await fetch(`version.json?_=${Date.now()}`, { cache:"no-store" });
-    if (!r.ok) return;
-    const v = await r.json();
-    S.latest = v.version || "";
-    if (v.version && cmpVer(v.version, APP_VERSION) > 0){
-      $("#verPill").classList.add("has-update");
-      $("#updateText").textContent = `มีเวอร์ชันใหม่ v${v.version} (ตอนนี้ใช้ v${APP_VERSION})`;
-      $("#updateBanner").classList.add("show");
-    }
-  }catch{}
-}
-setInterval(() => { if (document.visibilityState === "visible") checkUpdate(); }, 5 * 60 * 1000);
-
-/* ---------- Version history sheet ---------- */
-function openVersions(){
-  const upd = S.latest && cmpVer(S.latest, APP_VERSION) > 0;
-  const be = S.demo ? "ยังไม่เชื่อม" : (S.backendVersion && S.backendVersion !== "ไม่ทราบ" ? "v" + S.backendVersion : "ไม่ทราบ");
-  const status = upd ? `<div class="ver-status warn">🆕 มีเวอร์ชันใหม่ <b>v${esc(S.latest)}</b> บน GitHub — <a href="#" id="verReload" style="color:inherit;font-weight:700">โหลดเวอร์ชันล่าสุด</a></div>`
-    : S.latest ? `<div class="ver-status">✅ ใช้เวอร์ชันล่าสุดแล้ว (ตรวจกับ GitHub เมื่อ ${fmtTime(Date.now())} น.)</div>`
-    : `<div class="ver-status">ℹ️ ยังตรวจเวอร์ชันล่าสุดจาก GitHub ไม่ได้ (เช่น เปิดจากไฟล์ในเครื่อง)</div>`;
-  $("#sheetVer").innerHTML = `<div class="grip"></div>
-    <div class="sheet-h"><div><h2>เวอร์ชันของระบบ</h2><div class="sub">ระบบเช็คชื่อ ${esc(S.settings.title || "Claude AI Class")}</div></div><button class="x" data-close="#ovVer" aria-label="ปิด">✕</button></div>
-    <div class="ver-cards"><div class="ver-card"><div class="k">หน้าเว็บ</div><div class="v">v${APP_VERSION}</div></div><div class="ver-card"><div class="k">ระบบหลังบ้าน (Apps Script)</div><div class="v">${esc(be)}</div></div></div>
-    ${status}
-    <h3 style="font-size:16px;margin:0 0 12px">ประวัติการพัฒนา</h3>
-    ${RELEASES.map(r => `<div class="release ${r.v === APP_VERSION ? "current" : ""}"><h4>v${esc(r.v)} <small>${esc(thDate(keyToDate(r.date), false))}</small>${r.v === APP_VERSION ? '<span class="tag">ที่ใช้อยู่</span>' : ""}</h4><ul>${r.items.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div>`).join("")}
-    <div class="actions"><button class="btn btn-primary" data-close="#ovVer">ปิด</button></div>`;
-  openOv("#ovVer");
-  const rl = $("#verReload"); if (rl) rl.onclick = e => { e.preventDefault(); location.reload(); };
-}
+setInterval(() => { if (S.session && document.visibilityState === "visible" && !S.busy) load(true); }, POLL_MS);
+document.addEventListener("visibilitychange", () => { if (S.session && document.visibilityState === "visible" && !S.busy) load(true); });
 
 /* ---------- Render ---------- */
-function render(){
-  $("#classTitle").textContent = S.settings.title || "Claude AI Class";
-  document.title = `เช็คชื่อเข้าเรียน · ${S.settings.title || "Claude AI Class"}`;
-  const isToday = S.date === dateKey(new Date(now()));
+function renderAll(){ renderHeader(); renderSync(); renderStats(); renderMine(); renderList(); }
+function renderHeader(){
+  const title = S.settings.title || "Claude AI Class";
+  $("#classTitle").textContent = title; $("#loginTitle").textContent = title;
+  document.title = `เช็คชื่อเข้าเรียน · ${title}`;
+  const isToday = S.date === (S.profile?.today || S.date);
   $("#startInfo").textContent = (isToday ? "" : `กำลังดูข้อมูลวันที่ ${thDate(keyToDate(S.date), false)} · `) +
-    `เริ่มเรียน ${S.settings.startTime} น. · หลัง ${addMin(S.settings.startTime, S.settings.lateAfter)} น. นับเป็นมาสาย`;
-  $("#adminLbl").textContent = S.isAdmin ? "จัดการคลาส" : "ผู้สอน";
-  $("#datePill").hidden = !S.isAdmin;
-  if (S.isAdmin && !$("#dateInput").value) $("#dateInput").value = S.date;
-
-  const total = S.roster.length; let on = 0, late = 0;
-  S.roster.forEach(r => { const c = S.checkins[r.id]; if (c) (c.status === "late" ? late++ : on++); });
+    `เริ่มเรียน ${startHM()} น. · หลัง ${addMin(startHM(), S.settings.late_after)} น. นับเป็นมาสาย`;
+  const email = S.profile?.email || S.session?.user?.email || "";
+  $("#meIni").textContent = (email[0] || "?").toUpperCase();
+  $("#meEmail").innerHTML = esc(email) + (S.isAdmin ? ' <span class="role-tag">ผู้สอน</span>' : "");
+  $("#adminBtn").hidden = !S.isAdmin; $("#datePill").hidden = !S.isAdmin;
+  if (S.isAdmin && !$("#dateInput").value && S.date) $("#dateInput").value = S.date;
+}
+function renderSync(){
+  $("#sync").classList.toggle("err", S.err);
+  $("#syncText").textContent = S.err ? "เชื่อมต่อไม่ได้ · กำลังลองใหม่" : S.lastSync ? `เชื่อมต่อ Supabase แล้ว · อัปเดตล่าสุด ${new Date(S.lastSync).toLocaleTimeString("en-GB")}` : "กำลังเชื่อมต่อ…";
+  const be = S.backendVersion;
+  $("#verText").textContent = `เว็บ v${APP_VERSION} · ฐานข้อมูล ${be ? "v" + be : "…"}`;
+  const mismatch = be && (be.split(".")[0] !== APP_VERSION.split(".")[0] || cmpVer(be, MIN_BACKEND) < 0);
+  $("#mismatchBanner").classList.toggle("show", !!mismatch);
+  if (mismatch) $("#mismatchText").textContent = `หน้าเว็บ v${APP_VERSION} ต้องการฐานข้อมูลอย่างน้อย v${MIN_BACKEND} แต่ตอนนี้เป็น v${be} — รัน supabase/schema.sql เวอร์ชันล่าสุด`;
+}
+function renderStats(){
+  const total = S.board.length; let on = 0, late = 0;
+  S.board.forEach(r => { if (r.status === "late") late++; else if (r.status === "on") on++; });
   $("#sTotal").textContent = total; $("#sOn").textContent = on; $("#sLate").textContent = late; $("#sAbs").textContent = Math.max(0, total - on - late);
   $("#barOn").style.width = total ? (on/total*100) + "%" : 0;
   $("#barLate").style.width = total ? (late/total*100) + "%" : 0;
   $("#pct").textContent = total ? Math.round((on+late)/total*100) + "%" : "0%";
-
+}
+function renderMine(){
+  const mine = S.profile?.roster;
+  const showClaim = S.loaded && !mine && !S.isAdmin;
+  $("#claimView").hidden = !showClaim;
+  $("#myView").hidden = !mine;
+  if (showClaim) renderClaim();
+  if (mine){
+    const b = S.board.find(r => r.id === mine.id) || {};
+    const done = !!b.status;
+    const isToday = S.date === S.profile.today;
+    $("#myCard").className = "mycard" + (done ? " done" : "");
+    $("#myCard").innerHTML = `<div class="avatar">${esc(initials(mine.name))}</div>
+      <div class="info" style="flex:1;min-width:180px"><div class="n">${esc(mine.name)}</div>
+        <div class="m">${done ? `<span class="badge ${b.status==="late"?"late":"ok"}">${b.status==="late"?"มาสาย":"ตรงเวลา"}</span> <span>เช็คชื่อแล้วเมื่อ ${esc(fmtT(Date.parse(b.checked_at)))} น.</span>` : `<span>${esc(mine.grp || "ยังไม่ได้เช็คชื่อวันนี้")}</span>`}</div></div>
+      ${done ? `<button class="btn btn-ghost" data-act="view" data-id="${esc(mine.id)}">ดูรายละเอียด</button>`
+             : `<button class="btn btn-primary" data-act="check" data-id="${esc(mine.id)}" ${isToday ? "" : "disabled"}>✍️ เช็คชื่อวันนี้</button>`}`;
+  }
+  $("#listHeading").textContent = S.isAdmin ? "รายชื่อในคลาส" : "เพื่อนในคลาส";
+  $("#listSub").textContent = S.isAdmin ? "แตะ Approve เพื่อเช็คชื่อแทนผู้เรียน (เช่น ใช้แท็บเล็ตหน้าห้อง)" : "แสดงเฉพาะชื่อและสถานะ";
+}
+function renderClaim(){
+  $("#claimEmail").textContent = S.profile?.email || "";
+  const q = S.claimQ.trim().toLowerCase();
+  const rows = S.board.filter(r => !q || `${r.name} ${r.grp}`.toLowerCase().includes(q));
+  $("#claimList").innerHTML = rows.length ? rows.map(r => `<button class="claim-item" data-act="claim" data-id="${esc(r.id)}" ${r.claimed ? "disabled" : ""}>
+      <div class="avatar">${esc(initials(r.name))}</div><div><div class="n">${esc(r.name)}</div><div class="m">${r.claimed ? "มีบัญชีเลือกชื่อนี้แล้ว" : esc(r.grp || "แตะเพื่อเลือก")}</div></div></button>`).join("")
+    : `<div style="color:var(--muted);padding:12px">ไม่พบชื่อ — แจ้งผู้สอนให้เพิ่มชื่อของคุณ</div>`;
+}
+function renderList(){
   const list = $("#list");
   if (!S.loaded){ list.innerHTML = Array.from({length:6}, () => '<div class="skeleton"></div>').join(""); return; }
-  if (!total){
-    list.innerHTML = `<div class="empty"><div class="ill"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#1a6be0" stroke-width="1.8" stroke-linecap="round"><path d="M16 20v-1a4 4 0 00-4-4H7a4 4 0 00-4 4v1"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M19 8v6M16 11h6"/></svg></div>
-      <h3>ยังไม่มีรายชื่อผู้เรียน</h3>
-      <p>${S.isAdmin ? "นำเข้ารายชื่อจากไฟล์ CSV / Excel หรือวางรายชื่อลงชีต Roster ใน Google Sheet ได้เลย" : "ผู้สอนยังไม่ได้เพิ่มรายชื่อ กรุณารอสักครู่"}</p>
-      ${S.isAdmin ? '<button class="btn btn-primary" data-act="import">⬆️ นำเข้ารายชื่อ</button>' : ""}</div>`;
+  if (!S.board.length){
+    list.innerHTML = `<div class="empty"><h3>ยังไม่มีรายชื่อผู้เรียน</h3><p>${S.isAdmin ? "นำเข้ารายชื่อจากไฟล์ CSV / Excel ได้ที่ปุ่ม จัดการคลาส" : "ผู้สอนยังไม่ได้เพิ่มรายชื่อ"}</p>${S.isAdmin ? '<button class="btn btn-primary" data-act="import">⬆️ นำเข้ารายชื่อ</button>' : ""}</div>`;
     return;
   }
   const q = S.q.trim().toLowerCase();
-  const rows = S.roster.filter(r => {
-    const done = !!S.checkins[r.id];
+  const rows = S.board.filter(r => {
+    const done = !!r.status;
     if (S.filter === "pending" && done) return false;
     if (S.filter === "done" && !done) return false;
-    return !q || `${r.name} ${r.code||""} ${r.group||""}`.toLowerCase().includes(q);
+    return !q || `${r.name} ${r.grp}`.toLowerCase().includes(q);
   });
   if (!rows.length){ list.innerHTML = `<div class="empty"><h3>ไม่พบรายชื่อ</h3><p>ลองค้นหาด้วยคำอื่น หรือเปลี่ยนตัวกรอง</p></div>`; return; }
-  const canCheck = isToday;
+  const isToday = S.date === S.profile?.today;
   list.innerHTML = rows.map(r => {
-    const c = S.checkins[r.id];
-    const meta = [r.code, r.group].filter(Boolean).map(esc).join(" · ");
-    const right = c
-      ? `<button class="btn btn-time ${c.status==="late"?"late":""}" data-act="view" data-id="${esc(r.id)}" aria-label="ดูรายละเอียด">✓ ${esc(String(c.time||"").slice(0,5) || fmtTime(c.at))}</button>`
-      : `<button class="btn btn-primary" data-act="check" data-id="${esc(r.id)}" ${canCheck ? "" : "disabled"}>Approve</button>`;
-    const badge = c ? `<span class="badge ${c.status==="late"?"late":"ok"}">${c.status==="late"?"มาสาย":"ตรงเวลา"}</span>` : "";
-    return `<article class="card ${c?"done":""}"><div class="avatar">${esc(initials(r.name))}</div>
-      <div class="info"><div class="n">${esc(r.name)}</div><div class="m">${badge}${meta ? `<span>${meta}</span>` : ""}</div></div>${right}</article>`;
+    const done = !!r.status;
+    const ra = S.rosterAdmin[r.id] || {};
+    const badge = done ? `<span class="badge ${r.status==="late"?"late":"ok"}">${r.status==="late"?"มาสาย":"ตรงเวลา"}</span>` : "";
+    const acct = S.isAdmin ? `<span class="acct">${r.claimed ? '<span class="linked-dot"></span>ผูกบัญชีแล้ว' : "ยังไม่ผูกบัญชี"}</span>` : "";
+    const meta = [ra.code, r.grp].filter(Boolean).map(esc).join(" · ");
+    let right = "";
+    if (done) right = (S.isAdmin || r.is_me)
+      ? `<button class="btn btn-time ${r.status==="late"?"late":""}" data-act="view" data-id="${esc(r.id)}">✓ ${esc(fmtT(Date.parse(r.checked_at)))}</button>`
+      : `<span class="btn btn-time ${r.status==="late"?"late":""}" style="cursor:default">✓ ${esc(fmtT(Date.parse(r.checked_at)))}</span>`;
+    else if (S.isAdmin || r.is_me) right = `<button class="btn btn-primary" data-act="check" data-id="${esc(r.id)}" ${isToday ? "" : "disabled"}>Approve</button>`;
+    else if (S.isAdmin) right = "";
+    return `<article class="card ${done ? "done" : ""}"><div class="avatar">${esc(initials(r.name))}</div>
+      <div class="info"><div class="n">${esc(r.name)}${r.is_me ? ' <span class="badge ok" style="margin-left:4px">คุณ</span>' : ""}</div><div class="m">${badge}${meta ? `<span>${meta}</span>` : ""}${acct}</div></div>
+      ${S.isAdmin && !done ? `<button class="btn btn-ghost" data-act="manage" data-id="${esc(r.id)}" aria-label="จัดการ" style="padding:0 12px">⋯</button>` : ""}${right}</article>`;
   }).join("");
 }
 
 /* ---------- Overlays ---------- */
+let liveT = null;
 function openOv(id){ $(id).classList.add("open"); document.body.classList.add("lock"); }
 function closeOv(id){ $(id).classList.remove("open"); if (!document.querySelector(".overlay.open")) document.body.classList.remove("lock"); if (id === "#ovCheck"){ clearInterval(liveT); S.busy = false; } }
-document.querySelectorAll(".overlay").forEach(ov => ov.addEventListener("click", e => { if (e.target === ov) closeOv("#" + ov.id); }));
-document.addEventListener("keydown", e => { if (e.key === "Escape") document.querySelectorAll(".overlay.open").forEach(o => closeOv("#" + o.id)); });
+$$(".overlay").forEach(ov => ov.addEventListener("click", e => { if (e.target === ov) closeOv("#" + ov.id); }));
+document.addEventListener("keydown", e => { if (e.key === "Escape") $$(".overlay.open").forEach(o => closeOv("#" + o.id)); });
+function confirmBtn(b, fn){
+  const label = b.textContent;
+  b.onclick = async () => {
+    if (b.dataset.sure !== "1"){ b.dataset.sure = "1"; b.textContent = "แตะอีกครั้งเพื่อยืนยัน"; setTimeout(() => { if (b.dataset.sure === "1"){ b.dataset.sure = ""; b.textContent = label; } }, 3500); return; }
+    b.disabled = true;
+    try{ await fn(); }catch(e){ toast(errText(e)); }
+    finally{ b.disabled = false; b.dataset.sure = ""; b.textContent = label; }
+  };
+}
 
 /* ---------- Signature pad (touch, pen, mouse) ---------- */
 let pad_ = null;
 function makePad(box){
   const canvas = box.querySelector("canvas"); const ctx = canvas.getContext("2d");
-  const strokes = []; let cur = null;
-  const ink = "#0b2a5b";
+  const strokes = []; let cur = null; const ink = "#0b2a5b";
   function size(){ const r = box.getBoundingClientRect(); const dpr = Math.max(1, window.devicePixelRatio || 1);
     canvas.width = Math.round(r.width * dpr); canvas.height = Math.round(r.height * dpr); ctx.setTransform(dpr,0,0,dpr,0,0); redraw(); }
   function paint(c, W, H, base){
@@ -629,23 +741,37 @@ function makePad(box){
 }
 function deviceType(){ const w = Math.min(screen.width, screen.height); return /Mobi|Android|iPhone/i.test(navigator.userAgent) && w < 600 ? "มือถือ" : (navigator.maxTouchPoints > 1 && w >= 600 ? "แท็บเล็ต" : "คอมพิวเตอร์"); }
 
+/* ---------- Claim ---------- */
+function openClaim(id){
+  const r = S.board.find(x => x.id === id); if (!r || r.claimed) return;
+  $("#sheetCheck").innerHTML = `<div class="grip"></div>
+    <div class="sheet-h"><div class="avatar">${esc(initials(r.name))}</div><div><h2 id="ckName">${esc(r.name)}</h2><div class="sub">${esc(r.grp || "")}</div></div><button class="x" data-close="#ovCheck" aria-label="ปิด">✕</button></div>
+    <div class="ver-status warn">ยืนยันว่าคุณคือ <b>${esc(r.name)}</b> ใช่ไหม? เลือกได้ <b>ครั้งเดียว</b> ถ้าเลือกผิดต้องให้ผู้สอนแก้ไข</div>
+    <div class="actions"><button class="btn btn-ghost" data-close="#ovCheck">ยกเลิก</button><button class="btn btn-primary" id="claimGo">ใช่ นี่คือชื่อของฉัน</button></div>`;
+  openOv("#ovCheck");
+  $("#claimGo").onclick = async () => {
+    const b = $("#claimGo"); b.disabled = true; b.textContent = "กำลังบันทึก…";
+    try{ await rpc("claim_roster", { p_roster_id: id }); closeOv("#ovCheck"); toast(`ผูกบัญชีกับ ${r.name} แล้ว`); await load(true); }
+    catch(e){ b.disabled = false; b.textContent = "ใช่ นี่คือชื่อของฉัน"; toast(errText(e)); load(true); }
+  };
+}
+
 /* ---------- Check-in ---------- */
-let liveT = null;
 function openCheck(id){
-  const r = S.roster.find(x => x.id === id); if (!r) return;
-  if (S.checkins[id]) return openView(id);
+  const r = S.board.find(x => x.id === id); if (!r) return;
+  if (r.status) return openView(id);
   S.busy = true;
   $("#sheetCheck").innerHTML = `<div class="grip"></div>
     <div class="sheet-h"><div class="avatar">${esc(initials(r.name))}</div>
-      <div><h2 id="ckName">${esc(r.name)}</h2><div class="sub">${esc([r.code, r.group].filter(Boolean).join(" · ") || "ผู้เรียนคลาส " + (S.settings.title || "Claude AI"))}</div></div>
+      <div><h2 id="ckName">${esc(r.name)}</h2><div class="sub">${esc(r.grp || "ผู้เรียนคลาส " + (S.settings.title || "Claude AI"))}</div></div>
       <button class="x" data-close="#ovCheck" aria-label="ปิด">✕</button></div>
     <div class="timebox"><div><div class="l">เวลาที่เช็คชื่อ</div><div class="t" id="ckTime">--:--:--</div></div><span class="badge" id="ckBadge"></span></div>
     <div class="sig-label"><span>✍️ เซ็นชื่อในกรอบด้านล่าง</span><button type="button" id="sigClear">ล้างลายเซ็น</button></div>
     <div class="sigpad" id="sigpad"><canvas></canvas><div class="hint">ใช้นิ้ว ปากกา หรือเมาส์เซ็นชื่อที่นี่</div></div>
-    <div class="consent">ยืนยันว่าฉันคือ <b style="color:var(--ink)">&nbsp;${esc(r.name)}&nbsp;</b> และเข้าร่วมคลาสนี้ด้วยตนเอง</div>
+    <div class="consent">${S.isAdmin && !r.is_me ? `ผู้สอนเช็คชื่อแทน <b style="color:var(--ink)">${esc(r.name)}</b> (บันทึกว่าเช็คชื่อโดยบัญชีผู้สอน)` : `ยืนยันว่าฉันคือ <b style="color:var(--ink)">${esc(r.name)}</b> และเข้าร่วมคลาสนี้ด้วยตนเอง`}</div>
     <div class="actions"><button class="btn btn-ghost" data-close="#ovCheck">ยกเลิก</button><button class="btn btn-primary" id="ckGo">✓ Approve เข้าเรียน</button></div>`;
   openOv("#ovCheck");
-  const upd = () => { const t = now(); $("#ckTime").textContent = fmtTimeSec(t); const st = statusFor(t); const b = $("#ckBadge"); b.className = "badge " + (st === "late" ? "late" : "ok"); b.textContent = st === "late" ? "มาสาย" : "ตรงเวลา"; };
+  const upd = () => { const t = now(); $("#ckTime").textContent = fmtT(t, true); const st = statusPreview(t); const b = $("#ckBadge"); b.className = "badge " + (st === "late" ? "late" : "ok"); b.textContent = st === "late" ? "มาสาย" : "ตรงเวลา"; };
   upd(); clearInterval(liveT); liveT = setInterval(upd, 1000);
   requestAnimationFrame(() => { pad_?.destroy(); pad_ = makePad($("#sigpad")); });
   $("#sigClear").onclick = () => pad_.clear();
@@ -657,134 +783,141 @@ async function submitCheck(r){
     $("#sigpad").animate([{transform:"translateX(0)"},{transform:"translateX(-6px)"},{transform:"translateX(6px)"},{transform:"translateX(0)"}], {duration:280});
     return;
   }
-  const btn = $("#ckGo"); btn.disabled = true; btn.textContent = "กำลังบันทึกลง Google Sheet…";
-  const signature = pad_.toDataURL();
+  const btn = $("#ckGo"); btn.disabled = true; btn.textContent = "กำลังบันทึก…";
   try{
-    const j = await api("checkin", { rosterId: r.id, signature, device: deviceType() });
-    const rec = j.record; S.checkins[r.id] = rec; S.localSigs[r.id] = signature;
+    const rec = await rpc("check_in", { p_roster_id: r.id, p_signature: pad_.toDataURL(), p_device: deviceType() });
     clearInterval(liveT);
     $("#sheetCheck").innerHTML = `<div class="success"><div class="check"><svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
-      <h2>เช็คชื่อสำเร็จ!</h2><p>${esc(r.name)} · ${esc(String(rec.time).slice(0,5))} น. · ${rec.status === "late" ? "มาสาย" : "ตรงเวลา"}</p>
+      <h2>เช็คชื่อสำเร็จ!</h2><p>${esc(r.name)} · ${esc(fmtT(Date.parse(rec.checked_at)))} น. · ${rec.status === "late" ? "มาสาย" : "ตรงเวลา"}</p>
       <div class="actions"><button class="btn btn-primary" data-close="#ovCheck">เสร็จสิ้น</button></div></div>`;
     S.q = ""; $("#q").value = ""; $("#searchWrap").classList.remove("has");
-    render();
+    await load(true);
     setTimeout(() => { if ($("#ovCheck").classList.contains("open") && document.querySelector("#sheetCheck .success")) closeOv("#ovCheck"); }, 2600);
   }catch(e){
     btn.disabled = false; btn.textContent = "✓ Approve เข้าเรียน";
-    if (e && e.error === "already_checked_in"){ toast("ชื่อนี้เช็คชื่อไปแล้ว"); closeOv("#ovCheck"); load(true); }
-    else if (e && e.error === "not_found"){ toast("ไม่พบรายชื่อนี้แล้ว — กำลังรีเฟรช"); closeOv("#ovCheck"); load(true); }
-    else toast("บันทึกไม่สำเร็จ ลองอีกครั้ง");
+    toast(errText(e));
+    if (/already_checked_in|not_found/.test(e?.message || "")){ closeOv("#ovCheck"); load(true); }
   }
 }
-function openView(id){
-  const r = S.roster.find(x => x.id === id); const c = S.checkins[id]; if (!r || !c) return;
-  const local = S.localSigs[id];
-  const sig = local ? `<img alt="ลายเซ็นของ ${esc(r.name)}" src="${local}">`
-    : c.signatureUrl && /^https:\/\//.test(c.signatureUrl) ? `<a href="${esc(c.signatureUrl)}" target="_blank" rel="noopener">เปิดลายเซ็นใน Google Drive ↗</a>`
-    : '<span style="color:var(--muted)">ไม่มีลายเซ็น</span>';
+async function openView(id){
+  const r = S.board.find(x => x.id === id); if (!r || !r.status) return;
+  let d = S.details[id];
+  if (!d && r.is_me){ const { data } = await S.sb.from("attendance").select("checked_at,status,signature,device").eq("roster_id", id).eq("class_date", S.date).maybeSingle(); d = data; }
+  d = d || {};
+  const sig = d.signature && /^data:image\/(png|jpeg);base64,/.test(d.signature) ? `<img alt="ลายเซ็นของ ${esc(r.name)}" src="${d.signature}">` : '<span style="color:var(--muted)">ไม่มีลายเซ็น</span>';
+  const ra = S.rosterAdmin[id] || {};
   $("#sheetCheck").innerHTML = `<div class="grip"></div>
-    <div class="sheet-h"><div class="avatar" style="background:linear-gradient(135deg,var(--g500),var(--teal));color:#fff;border:0">${esc(initials(r.name))}</div>
-      <div><h2 id="ckName">${esc(r.name)}</h2><div class="sub"><span class="badge ${c.status==="late"?"late":"ok"}">${c.status==="late"?"มาสาย":"ตรงเวลา"}</span></div></div>
+    <div class="sheet-h"><div class="avatar" style="background:linear-gradient(135deg,#22c55e,var(--ok));color:#fff;border:0">${esc(initials(r.name))}</div>
+      <div><h2 id="ckName">${esc(r.name)}</h2><div class="sub"><span class="badge ${r.status==="late"?"late":"ok"}">${r.status==="late"?"มาสาย":"ตรงเวลา"}</span></div></div>
       <button class="x" data-close="#ovCheck" aria-label="ปิด">✕</button></div>
-    <dl class="kv"><dt>เวลาเช็คชื่อ</dt><dd>${esc(c.time)} น.</dd><dt>วันที่</dt><dd>${esc(thDate(keyToDate(c.date || S.date)))}</dd>
-      ${r.code ? `<dt>รหัส</dt><dd>${esc(r.code)}</dd>` : ""}${r.group ? `<dt>กลุ่ม</dt><dd>${esc(r.group)}</dd>` : ""}${c.device ? `<dt>อุปกรณ์</dt><dd>${esc(c.device)}</dd>` : ""}</dl>
+    <dl class="kv"><dt>เวลาเช็คชื่อ</dt><dd>${esc(fmtT(Date.parse(r.checked_at), true))} น.</dd><dt>วันที่</dt><dd>${esc(thDate(keyToDate(S.date)))}</dd>
+      ${r.grp ? `<dt>กลุ่ม</dt><dd>${esc(r.grp)}</dd>` : ""}${d.device ? `<dt>อุปกรณ์</dt><dd>${esc(d.device)}</dd>` : ""}
+      ${S.isAdmin && ra.email ? `<dt>อีเมล</dt><dd>${esc(ra.email)}</dd>` : ""}</dl>
     <div class="sig-label"><span>ลายเซ็น</span></div><div class="sig-view">${sig}</div>
     <div class="actions">${S.isAdmin ? `<button class="btn btn-danger" id="undoBtn">ยกเลิกการเช็คชื่อ</button>` : ""}<button class="btn btn-primary" data-close="#ovCheck">ปิด</button></div>`;
   openOv("#ovCheck");
   const u = $("#undoBtn");
   if (u) confirmBtn(u, async () => {
-    await api("undo", { pin:S.pin, rosterId:id, date:S.date });
-    delete S.checkins[id]; closeOv("#ovCheck"); render(); toast("ยกเลิกการเช็คชื่อแล้ว");
+    const { error } = await S.sb.from("attendance").delete().eq("roster_id", id).eq("class_date", S.date);
+    if (error) throw error;
+    closeOv("#ovCheck"); toast("ยกเลิกการเช็คชื่อแล้ว"); await load(true);
   });
 }
 
-/* ---------- Teacher (PIN) ---------- */
-function openPin(){
-  $("#sheetAdmin").innerHTML = `<div class="grip"></div>
-    <div class="sheet-h"><div><h2>สำหรับผู้สอน</h2><div class="sub">ใส่ PIN เพื่อจัดการรายชื่อ เวลาเรียน และส่งออกข้อมูล</div></div><button class="x" data-close="#ovAdmin" aria-label="ปิด">✕</button></div>
-    <form id="pinForm"><input class="pin-input" id="pinIn" type="password" inputmode="numeric" autocomplete="current-password" placeholder="••••" aria-label="PIN">
-    <div class="actions"><button class="btn btn-ghost" type="button" data-close="#ovAdmin">ยกเลิก</button><button class="btn btn-primary" type="submit" id="pinGo">เข้าสู่โหมดผู้สอน</button></div></form>
-    ${S.demo ? '<p style="font-size:13px;color:var(--muted);margin-top:12px">โหมดทดลอง: PIN คือ 1234</p>' : ""}`;
-  openOv("#ovAdmin");
-  setTimeout(() => $("#pinIn").focus(), 80);
-  $("#pinForm").onsubmit = async e => {
-    e.preventDefault();
-    const pin = $("#pinIn").value.trim(); if (!pin) return;
-    const b = $("#pinGo"); b.disabled = true; b.textContent = "กำลังตรวจสอบ…";
-    try{ await enterAdmin(pin); openAdmin(); }
-    catch(err){ b.disabled = false; b.textContent = "เข้าสู่โหมดผู้สอน"; toast(err && err.error === "bad_pin" ? "PIN ไม่ถูกต้อง" : "ตรวจสอบไม่สำเร็จ ลองอีกครั้ง"); }
+/* ---------- Admin: per-student manage ---------- */
+function openManage(id){
+  const r = S.board.find(x => x.id === id); if (!r) return;
+  const ra = S.rosterAdmin[id] || {};
+  $("#sheetCheck").innerHTML = `<div class="grip"></div>
+    <div class="sheet-h"><div class="avatar">${esc(initials(r.name))}</div><div><h2 id="ckName">แก้ไขรายชื่อ</h2><div class="sub">${r.claimed ? "ผูกบัญชีแล้ว" : "ยังไม่ผูกบัญชี"}</div></div><button class="x" data-close="#ovCheck" aria-label="ปิด">✕</button></div>
+    <div class="frow"><label class="field" style="flex:2">ชื่อ-นามสกุล<input id="mName" value="${esc(r.name)}"></label><label class="field">รหัส<input id="mCode" value="${esc(ra.code || "")}"></label></div>
+    <div class="frow" style="margin-top:10px"><label class="field">กลุ่ม / บริษัท<input id="mGrp" value="${esc(r.grp || "")}"></label><label class="field">Gmail (ผูกอัตโนมัติเมื่อล็อกอิน)<input id="mEmail" type="email" value="${esc(ra.email || "")}" placeholder="name@gmail.com"></label></div>
+    <button class="btn btn-primary" id="mSave" style="width:100%;margin-top:12px">บันทึก</button>
+    <div class="btn-grid" style="margin-top:10px">${r.claimed ? '<button class="btn btn-ghost" id="mUnlink">ยกเลิกการผูกบัญชี</button>' : '<span></span>'}<button class="btn btn-danger" id="mDelete">ลบรายชื่อนี้</button></div>`;
+  openOv("#ovCheck");
+  $("#mSave").onclick = async () => {
+    const name = $("#mName").value.trim().replace(/\s+/g, " "); if (!name) return toast("กรุณาใส่ชื่อ");
+    const email = $("#mEmail").value.trim().toLowerCase() || null;
+    const { error } = await S.sb.from("roster").update({ name, code: $("#mCode").value.trim(), grp: $("#mGrp").value.trim(), email }).eq("id", id);
+    if (error) return toast(errText(error));
+    closeOv("#ovCheck"); toast("บันทึกแล้ว"); load(true);
   };
+  const ul = $("#mUnlink");
+  if (ul) confirmBtn(ul, async () => { const { error } = await S.sb.from("roster").update({ user_id: null }).eq("id", id); if (error) throw error; closeOv("#ovCheck"); toast("ยกเลิกการผูกบัญชีแล้ว ผู้เรียนเลือกชื่อใหม่ได้"); load(true); });
+  confirmBtn($("#mDelete"), async () => { const { error } = await S.sb.from("roster").delete().eq("id", id); if (error) throw error; closeOv("#ovCheck"); toast("ลบรายชื่อแล้ว"); load(true); });
 }
-async function enterAdmin(pin){
-  const j = await api("verifyPin", { pin });
-  S.isAdmin = true; S.pin = pin; S.sheetUrl = j.sheetUrl || ""; ss.set("checkin_pin", pin);
-  render();
-}
-function exitAdmin(){ S.isAdmin = false; S.pin = ""; S.pickedDate = ""; ss.set("checkin_pin", null); $("#dateInput").value = ""; closeOv("#ovAdmin"); load(true); toast("ออกจากโหมดผู้สอนแล้ว"); }
 
+/* ---------- Admin panel ---------- */
 function openAdmin(){
   const s = S.settings;
+  const linked = S.board.filter(r => r.claimed).length;
   $("#sheetAdmin").innerHTML = `<div class="grip"></div>
-    <div class="sheet-h"><div><h2>จัดการคลาส</h2><div class="sub">รายชื่อ เวลาเรียน และการส่งออกข้อมูล · เว็บ v${APP_VERSION}${S.demo ? "" : " · หลังบ้าน v" + esc(S.backendVersion || "?")}</div></div><button class="x" data-close="#ovAdmin" aria-label="ปิด">✕</button></div>
-    ${S.sheetUrl ? `<a class="btn btn-ghost link-btn" style="width:100%;margin-bottom:12px" href="${esc(S.sheetUrl)}" target="_blank" rel="noopener">📊 เปิด Google Sheet</a>` : ""}
+    <div class="sheet-h"><div><h2>จัดการคลาส</h2><div class="sub">เว็บ v${APP_VERSION} · ฐานข้อมูล v${esc(S.backendVersion || "?")} · ผูกบัญชีแล้ว ${linked}/${S.board.length} คน</div></div><button class="x" data-close="#ovAdmin" aria-label="ปิด">✕</button></div>
 
     <div class="admin-sec"><h3>⬆️ นำเข้ารายชื่อผู้เรียน</h3>
-      <p>รองรับ .csv และ .xlsx รวมถึงไฟล์จาก Google Forms ที่มี "ชื่อ-นามสกุล 2, 3, …" (แยกเป็นรายคนให้อัตโนมัติ) หรือจะวางรายชื่อลงชีต <b>Roster</b> ใน Google Sheet โดยตรงก็ได้</p>
+      <p>รองรับ .csv และ .xlsx รวมถึงไฟล์จาก Google Forms ที่มี "ชื่อ-นามสกุล 2, 3, …" ถ้าไฟล์มีคอลัมน์อีเมล ระบบจะผูกบัญชีให้อัตโนมัติเมื่อผู้เรียนล็อกอินด้วย Gmail นั้น</p>
       <div class="drop" id="drop" role="button" tabindex="0"><b>แตะเพื่อเลือกไฟล์</b> หรือลากไฟล์มาวาง<small>CSV (UTF-8) หรือ Excel</small></div>
       <div id="importPreview"></div>
       <button class="btn btn-ghost" id="tplBtn" style="width:100%;margin-top:10px">📄 ดาวน์โหลดไฟล์ตัวอย่าง</button>
     </div>
 
     <div class="admin-sec"><h3>➕ เพิ่มรายชื่อทีละคน</h3>
-      <div class="frow"><label class="field" style="flex:2">ชื่อ-นามสกุล<input id="addName" placeholder="เช่น สมชาย ใจดี"></label><label class="field">รหัส (ถ้ามี)<input id="addCode"></label></div>
-      <div class="frow" style="margin-top:10px"><label class="field">กลุ่ม / บริษัท (ถ้ามี)<input id="addGroup"></label><button class="btn btn-primary" id="addBtn" style="height:46px">เพิ่ม</button></div>
+      <div class="frow"><label class="field" style="flex:2">ชื่อ-นามสกุล<input id="addName" placeholder="เช่น สมชาย ใจดี"></label><label class="field">กลุ่ม / บริษัท<input id="addGroup"></label></div>
+      <div class="frow" style="margin-top:10px"><label class="field" style="flex:2">Gmail (ถ้ามี)<input id="addEmail" type="email" placeholder="name@gmail.com"></label><button class="btn btn-primary" id="addBtn" style="height:46px">เพิ่ม</button></div>
     </div>
 
     <div class="admin-sec"><h3>⏰ ตั้งค่าคลาส</h3>
       <div class="frow"><label class="field" style="flex:2">ชื่อคลาส<input id="setTitle" value="${esc(s.title)}"></label></div>
-      <div class="frow" style="margin-top:10px"><label class="field">เวลาเริ่มเรียน<input type="time" id="setStart" value="${esc(s.startTime)}"></label>
-        <label class="field">นับว่าสายหลัง (นาที)<input type="number" min="0" max="180" id="setLate" value="${esc(s.lateAfter)}" inputmode="numeric"></label></div>
+      <div class="frow" style="margin-top:10px"><label class="field">เวลาเริ่มเรียน<input type="time" id="setStart" value="${esc(startHM())}"></label>
+        <label class="field">นับว่าสายหลัง (นาที)<input type="number" min="0" max="180" id="setLate" value="${esc(s.late_after)}" inputmode="numeric"></label></div>
       <button class="btn btn-primary" id="saveSet" style="width:100%;margin-top:10px">บันทึกการตั้งค่า</button>
     </div>
 
     <div class="admin-sec"><h3>📤 ส่งออกข้อมูล</h3>
-      <p>ข้อมูลของวันที่ <b>${esc(thDate(keyToDate(S.date), false))}</b> — ทุกการเช็คชื่อถูกบันทึกลงชีต <b>Attendance</b> อัตโนมัติแล้ว ปุ่มด้านล่างใช้สรุปรายชื่อทั้งคลาส รวมคนที่ยังไม่มา</p>
-      <div class="btn-grid"><button class="btn btn-primary" id="copySheet">📋 คัดลอกสรุป</button><button class="btn btn-ghost" id="dlCsv">⬇️ ดาวน์โหลด CSV</button></div>
+      <p>สรุปของวันที่ <b>${esc(thDate(keyToDate(S.date), false))}</b> รวมคนที่ยังไม่มา — คัดลอกไปวางใน Google Sheets ได้ทันที</p>
+      <div class="btn-grid"><button class="btn btn-primary" id="copySheet">📋 คัดลอกไป Google Sheets</button><button class="btn btn-ghost" id="dlCsv">⬇️ ดาวน์โหลด CSV</button></div>
     </div>
 
     <div class="admin-sec" style="border-color:#f7caca"><h3>⚠️ ล้างข้อมูล</h3>
+      <p>ลบรายชื่อทั้งหมดจะลบประวัติการเช็คชื่อทุกวันไปด้วย</p>
       <div class="btn-grid"><button class="btn btn-danger" id="resetDay">ล้างการเช็คชื่อวันนี้</button><button class="btn btn-danger" id="clearRoster">ลบรายชื่อทั้งหมด</button></div>
-    </div>
-    <button class="btn btn-ghost" id="logout" style="width:100%">ออกจากโหมดผู้สอน</button>`;
+    </div>`;
   openOv("#ovAdmin");
-
   const drop = $("#drop");
   drop.onclick = () => $("#fileInput").click();
   drop.onkeydown = e => { if (e.key === "Enter" || e.key === " ") $("#fileInput").click(); };
   drop.ondragover = e => { e.preventDefault(); drop.classList.add("over"); };
   drop.ondragleave = () => drop.classList.remove("over");
   drop.ondrop = e => { e.preventDefault(); drop.classList.remove("over"); const f = e.dataTransfer.files[0]; if (f) readFile(f); };
-  $("#tplBtn").onclick = () => download("roster-template.csv", "﻿ชื่อ-นามสกุล,รหัส,กลุ่ม\nสมชาย ใจดี,001,บริษัท A\nJane Smith,002,บริษัท B\n");
+  $("#tplBtn").onclick = () => download("roster-template.csv", "﻿ชื่อ-นามสกุล,กลุ่ม,อีเมล\nสมชาย ใจดี,บริษัท A,somchai@gmail.com\nJane Smith,บริษัท B,\n");
   $("#addBtn").onclick = addOne;
   $("#saveSet").onclick = saveSettings;
   $("#copySheet").onclick = () => copyText(buildTable("\t"), "คัดลอกแล้ว — วางใน Google Sheets หรือ Excel ได้เลย");
   $("#dlCsv").onclick = () => download(`attendance-${S.date}.csv`, "﻿" + buildTable(","));
-  confirmBtn($("#resetDay"), async () => { await api("resetDay", { pin:S.pin, date:S.date }); toast("ล้างการเช็คชื่อแล้ว"); await load(true); });
-  confirmBtn($("#clearRoster"), async () => { await api("clearRoster", { pin:S.pin }); toast("ลบรายชื่อทั้งหมดแล้ว"); await load(true); });
-  $("#logout").onclick = exitAdmin;
+  confirmBtn($("#resetDay"), async () => { const { error } = await S.sb.from("attendance").delete().eq("class_date", S.date); if (error) throw error; toast("ล้างการเช็คชื่อแล้ว"); await load(true); });
+  confirmBtn($("#clearRoster"), async () => { const { error } = await S.sb.from("roster").delete().not("id", "is", null); if (error) throw error; toast("ลบรายชื่อทั้งหมดแล้ว"); await load(true); });
 }
-function confirmBtn(b, fn){
-  const label = b.textContent;
-  b.onclick = async () => {
-    if (b.dataset.sure !== "1"){ b.dataset.sure = "1"; b.textContent = "แตะอีกครั้งเพื่อยืนยัน"; setTimeout(() => { if (b.dataset.sure === "1"){ b.dataset.sure = ""; b.textContent = label; } }, 3500); return; }
-    b.disabled = true;
-    try{ await fn(); }catch(e){ adminErr(e); }
-    finally{ b.disabled = false; b.dataset.sure = ""; b.textContent = label; }
-  };
+async function insertRows(rows){
+  const have = new Set(S.board.map(r => nameKey(r.name)));
+  let order = S.board.reduce((m, r) => Math.max(m, r.sort_order || 0), 0);
+  const todo = rows.filter(r => { const k = nameKey(r.name); if (have.has(k)) return false; have.add(k); return true; })
+    .map(r => ({ name: r.name.slice(0, 120), code: String(r.code || "").slice(0, 40), grp: String(r.group || "").slice(0, 120), email: r.email ? String(r.email).trim().toLowerCase() : null, sort_order: ++order }));
+  if (todo.length){ const { error } = await S.sb.from("roster").insert(todo); if (error) throw error; }
+  return { added: todo.length, skipped: rows.length - todo.length };
 }
-function adminErr(e){
-  if (e && e.error === "bad_pin"){ toast("PIN ไม่ถูกต้องหรือถูกเปลี่ยน — กรุณาเข้าสู่ระบบใหม่"); exitAdmin(); }
-  else toast((e && e.message) || "ทำรายการไม่สำเร็จ ลองอีกครั้ง");
+async function addOne(){
+  const name = $("#addName").value.trim().replace(/\s+/g, " "); if (!name) return toast("กรุณาใส่ชื่อ");
+  try{
+    const j = await insertRows([{ name, group: $("#addGroup").value.trim(), email: $("#addEmail").value.trim() }]);
+    $("#addName").value = $("#addGroup").value = $("#addEmail").value = "";
+    toast(j.added ? `เพิ่ม ${name} แล้ว` : "ชื่อนี้มีอยู่แล้ว"); await load(true);
+  }catch(e){ toast(errText(e)); }
+}
+async function saveSettings(){
+  const s = { title: $("#setTitle").value.trim() || "Claude AI Class", start_time: ($("#setStart").value || "09:00") + ":00", late_after: Math.max(0, Math.min(180, parseInt($("#setLate").value, 10) || 0)), updated_at: new Date().toISOString() };
+  const { error } = await S.sb.from("settings").update(s).eq("id", 1);
+  if (error) return toast(errText(error));
+  toast("บันทึกการตั้งค่าแล้ว"); load(true);
 }
 
 /* ---------- Import (CSV / Excel / Google Forms) ---------- */
@@ -816,7 +949,7 @@ function parseRoster(rows){
       if (/ชื่อ.*สกุล|full\s*name|ชื่อ\s*-\s*สกุล/.test(t)) m.full ??= j;
       else if (/นามสกุล|surname|last\s*name/.test(t)) m.last ??= j;
       else if (/ชื่อเล่น|nick/.test(t)) m.nick ??= j;
-      else if (/อีเมล|e-?mail/.test(t)) m.email ??= j;
+      else if (/อีเมล|e-?mail|gmail/.test(t)) m.email ??= j;
       else if (/^ชื่อ|ชื่อจริง|first\s*name|^name$|^ชื่อผู้|participant|student\s*name/.test(t)) m.first ??= j;
       else if (/รหัส|student\s*id|^id$|^no\.?$|เลขที่|code/.test(t)) m.code ??= j;
       else if (/กลุ่ม|group|section|ห้อง|บริษัท|company|organi[sz]ation|หน่วยงาน|ตำแหน่ง|team|ทีม/.test(t)) m.group ??= j;
@@ -826,18 +959,19 @@ function parseRoster(rows){
   let body;
   if (hIdx === -1){
     const numFirst = rows.every(r => /^\d+$/.test(r[0] || "")) && rows.some(r => r[1]);
-    map = numFirst ? {code:0, full:1, group:2} : {full:0, code:1, group:2};
+    map = numFirst ? {code:0, full:1, group:2} : {full:0, group:1};
     body = rows;
   } else body = rows.slice(hIdx + 1);
   const clean = n => String(n || "").replace(/\s+/g, " ").trim()
     .replace(/^(นางสาว|น\.ส\.|ด\.ช\.|ด\.ญ\.)\s*/, "").replace(/^(นาย|นาง|mr\.?|mrs\.?|ms\.?|miss|dr\.?)\s+/i, "").trim();
   const shortOrg = g => String(g || "").replace(/^บริษัท\s*/, "").replace(/\s*(จำกัด|\(มหาชน\))\s*$/g, "").trim();
+  const okEmail = e => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(e || "").trim()) ? String(e).trim().toLowerCase() : "";
   const seen = new Set(), out = [];
   body.forEach(r => {
     const group = shortOrg(map.group != null ? r[map.group] : "");
     const code = map.code != null ? r[map.code] || "" : "";
     const main = clean(map.full != null ? r[map.full] : [r[map.first], r[map.last]].filter(Boolean).join(" "));
-    [{ name:main, code }, ...extras.map(j => ({ name:clean(r[j]), code:"" }))].forEach(p => {
+    [{ name:main, code, email: okEmail(map.email != null ? r[map.email] : "") }, ...extras.map(j => ({ name:clean(r[j]), code:"", email:"" }))].forEach(p => {
       if (!p.name || p.name === "-") return;
       const k = nameKey(p.name); if (seen.has(k)) return; seen.add(k);
       out.push({ ...p, group });
@@ -847,43 +981,31 @@ function parseRoster(rows){
 }
 function showPreview(fname){
   const rows = S.importRows;
-  $("#importPreview").innerHTML = `<div class="preview"><table><thead><tr><th>#</th><th>ชื่อ</th><th>รหัส</th><th>กลุ่ม</th></tr></thead><tbody>
-    ${rows.slice(0,5).map((r,i) => `<tr><td>${i+1}</td><td>${esc(r.name)}</td><td>${esc(r.code)}</td><td>${esc(r.group)}</td></tr>`).join("")}
+  $("#importPreview").innerHTML = `<div class="preview"><table><thead><tr><th>#</th><th>ชื่อ</th><th>กลุ่ม</th><th>อีเมล</th></tr></thead><tbody>
+    ${rows.slice(0,5).map((r,i) => `<tr><td>${i+1}</td><td>${esc(r.name)}</td><td>${esc(r.group)}</td><td>${esc(r.email)}</td></tr>`).join("")}
     ${rows.length > 5 ? `<tr><td colspan="4" style="color:var(--muted)">…และอีก ${rows.length-5} คน</td></tr>` : ""}</tbody></table></div>
-    <div style="font-size:13px;color:var(--muted);margin-top:8px">ไฟล์ ${esc(fname)} · พบ <b style="color:var(--g800)">${rows.length}</b> รายชื่อ</div>
-    <div class="seg"><label><input type="radio" name="imode" value="append" checked><span>เพิ่มต่อจากเดิม</span></label><label><input type="radio" name="imode" value="replace"><span>แทนที่ทั้งหมด</span></label></div>
-    <button class="btn btn-primary" id="doImport" style="width:100%">นำเข้า ${rows.length} รายชื่อ</button>`;
+    <div style="font-size:13px;color:var(--muted);margin-top:8px">ไฟล์ ${esc(fname)} · พบ <b style="color:var(--g800)">${rows.length}</b> รายชื่อ · ชื่อที่มีอยู่แล้วจะถูกข้าม</div>
+    <button class="btn btn-primary" id="doImport" style="width:100%;margin-top:12px">นำเข้า ${rows.length} รายชื่อ</button>`;
   $("#doImport").onclick = async () => {
-    const btn = $("#doImport"); btn.disabled = true; btn.textContent = "กำลังบันทึกลง Google Sheet…";
-    const mode = document.querySelector('input[name=imode]:checked').value;
+    const btn = $("#doImport"); btn.disabled = true; btn.textContent = "กำลังบันทึก…";
     try{
-      const j = await api("importRoster", { pin:S.pin, mode, rows:S.importRows });
+      const j = await insertRows(S.importRows);
       S.importRows = null; $("#importPreview").innerHTML = "";
       toast(j.added ? `นำเข้าแล้ว ${j.added} รายชื่อ${j.skipped ? ` (ข้ามชื่อซ้ำ ${j.skipped})` : ""}` : "รายชื่อทั้งหมดมีอยู่แล้ว");
       await load(true);
-    }catch(e){ btn.disabled = false; btn.textContent = "ลองนำเข้าอีกครั้ง"; adminErr(e); }
+    }catch(e){ btn.disabled = false; btn.textContent = "ลองนำเข้าอีกครั้ง"; toast(errText(e)); }
   };
-}
-async function addOne(){
-  const name = $("#addName").value.trim().replace(/\s+/g, " "); if (!name){ toast("กรุณาใส่ชื่อ"); return; }
-  try{
-    const j = await api("addStudent", { pin:S.pin, student:{ name, code:$("#addCode").value.trim(), group:$("#addGroup").value.trim() } });
-    $("#addName").value = $("#addCode").value = $("#addGroup").value = "";
-    toast(j.added ? `เพิ่ม ${name} แล้ว` : "ชื่อนี้มีอยู่แล้ว"); await load(true);
-  }catch(e){ adminErr(e); }
-}
-async function saveSettings(){
-  const s = { title:$("#setTitle").value.trim() || "Claude AI Class", startTime:$("#setStart").value || "09:00", lateAfter:Math.max(0, Math.min(180, parseInt($("#setLate").value, 10) || 0)) };
-  try{ await api("saveSettings", { pin:S.pin, settings:s }); S.settings = { ...S.settings, ...s }; render(); toast("บันทึกการตั้งค่าแล้ว"); }
-  catch(e){ adminErr(e); }
 }
 
 /* ---------- Export ---------- */
 function buildTable(sep){
   const q = v => { v = String(v ?? ""); return sep === "," && /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v.replace(/[\t\n]/g, " "); };
-  const lines = [["ลำดับ","รหัส","ชื่อ-นามสกุล","กลุ่ม","วันที่","เวลาเช็คชื่อ","สถานะ","ลายเซ็น","อุปกรณ์"].map(q).join(sep)];
-  S.roster.forEach((r, i) => { const c = S.checkins[r.id];
-    lines.push([i+1, r.code, r.name, r.group, S.date, c ? c.time : "", c ? (c.status === "late" ? "มาสาย" : "ตรงเวลา") : "ขาด/ยังไม่มา", c && c.signatureUrl ? c.signatureUrl : "", c ? c.device || "" : ""].map(q).join(sep)); });
+  const lines = [["ลำดับ","รหัส","ชื่อ-นามสกุล","กลุ่ม","อีเมล","วันที่","เวลาเช็คชื่อ","สถานะ","ลายเซ็น","อุปกรณ์"].map(q).join(sep)];
+  S.board.forEach((r, i) => {
+    const ra = S.rosterAdmin[r.id] || {}, d = S.details[r.id] || {};
+    lines.push([i+1, ra.code, r.name, r.grp, ra.email, S.date, r.checked_at ? fmtT(Date.parse(r.checked_at), true) : "",
+      r.status ? (r.status === "late" ? "มาสาย" : "ตรงเวลา") : "ขาด/ยังไม่มา", d.signature ? "มี" : "", d.device || ""].map(q).join(sep));
+  });
   return lines.join("\n");
 }
 async function copyText(t, ok){ try{ await navigator.clipboard.writeText(t); toast(ok); }catch{ toast("คัดลอกไม่สำเร็จในเบราว์เซอร์นี้"); } }
@@ -893,32 +1015,90 @@ function download(filename, data){
   setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
 
+/* ---------- Account sheet ---------- */
+function openAccount(){
+  const email = S.profile?.email || "";
+  const mine = S.profile?.roster;
+  $("#sheetCheck").innerHTML = `<div class="grip"></div>
+    <div class="sheet-h"><div class="avatar">${esc((email[0] || "?").toUpperCase())}</div><div><h2 id="ckName">บัญชีของฉัน</h2><div class="sub">${esc(email)}</div></div><button class="x" data-close="#ovCheck" aria-label="ปิด">✕</button></div>
+    <dl class="kv"><dt>สิทธิ์</dt><dd>${S.isAdmin ? "ผู้สอน / ผู้ดูแลระบบ" : "ผู้เรียน"}</dd><dt>ชื่อในคลาส</dt><dd>${mine ? esc(mine.name) : "ยังไม่ได้เลือก"}</dd></dl>
+    <div class="actions"><button class="btn btn-ghost" data-close="#ovCheck">ปิด</button><button class="btn btn-danger" id="logoutBtn">ออกจากระบบ</button></div>`;
+  openOv("#ovCheck");
+  $("#logoutBtn").onclick = signOut;
+}
+
+/* ---------- Versions ---------- */
+async function checkUpdate(){
+  if (location.protocol === "file:") return;
+  try{
+    const r = await fetch(`version.json?_=${Date.now()}`, { cache:"no-store" });
+    if (!r.ok) return;
+    const v = await r.json();
+    S.latest = v.version || "";
+    if (v.version && cmpVer(v.version, APP_VERSION) > 0){
+      $$(".ver-pill").forEach(p => p.classList.add("has-update"));
+      $("#updateText").textContent = `มีเวอร์ชันใหม่ v${v.version} (ตอนนี้ใช้ v${APP_VERSION})`;
+      $("#updateBanner").classList.add("show");
+    }
+  }catch{}
+}
+setInterval(() => { if (document.visibilityState === "visible") checkUpdate(); }, 5 * 60 * 1000);
+function openVersions(){
+  const upd = S.latest && cmpVer(S.latest, APP_VERSION) > 0;
+  const be = S.backendVersion ? "v" + S.backendVersion : (S.session ? "…" : "เข้าสู่ระบบเพื่อดู");
+  const status = upd ? `<div class="ver-status warn">🆕 มีเวอร์ชันใหม่ <b>v${esc(S.latest)}</b> บน GitHub — <a href="#" id="verReload" style="color:inherit;font-weight:700">โหลดเวอร์ชันล่าสุด</a></div>`
+    : S.latest ? `<div class="ver-status">✅ ใช้เวอร์ชันล่าสุดแล้ว</div>`
+    : `<div class="ver-status">ℹ️ ยังตรวจเวอร์ชันล่าสุดจาก GitHub ไม่ได้</div>`;
+  $("#sheetVer").innerHTML = `<div class="grip"></div>
+    <div class="sheet-h"><div><h2>เวอร์ชันของระบบ</h2><div class="sub">ระบบเช็คชื่อ ${esc(S.settings.title || "Claude AI Class")}</div></div><button class="x" data-close="#ovVer" aria-label="ปิด">✕</button></div>
+    <div class="ver-cards"><div class="ver-card"><div class="k">หน้าเว็บ</div><div class="v">v${APP_VERSION}</div></div><div class="ver-card"><div class="k">ฐานข้อมูล (Supabase)</div><div class="v" style="font-size:${S.backendVersion ? 24 : 15}px">${esc(be)}</div></div></div>
+    ${status}
+    <h3 style="font-size:16px;margin:0 0 12px">ประวัติการพัฒนา</h3>
+    ${RELEASES.map(r => `<div class="release ${r.v === APP_VERSION ? "current" : ""}"><h4>v${esc(r.v)} <small>${esc(thDate(keyToDate(r.date), false))}</small>${r.v === APP_VERSION ? '<span class="tag">ที่ใช้อยู่</span>' : ""}</h4><ul>${r.items.map(i => `<li>${esc(i)}</li>`).join("")}</ul></div>`).join("")}
+    <div class="actions"><button class="btn btn-primary" data-close="#ovVer">ปิด</button></div>`;
+  openOv("#ovVer");
+  const rl = $("#verReload"); if (rl) rl.onclick = e => { e.preventDefault(); location.reload(); };
+}
+
 /* ---------- Events ---------- */
 document.addEventListener("click", e => {
   const c = e.target.closest("[data-close]"); if (c){ closeOv(c.dataset.close); return; }
-  const a = e.target.closest("[data-act]"); if (!a) return;
-  if (a.dataset.act === "check") openCheck(a.dataset.id);
-  else if (a.dataset.act === "view") openView(a.dataset.id);
+  const a = e.target.closest("[data-act]"); if (!a || a.disabled) return;
+  const id = a.dataset.id;
+  if (a.dataset.act === "check") openCheck(id);
+  else if (a.dataset.act === "view") openView(id);
+  else if (a.dataset.act === "claim") openClaim(id);
+  else if (a.dataset.act === "manage") openManage(id);
   else if (a.dataset.act === "import"){ openAdmin(); setTimeout(() => $("#fileInput").click(), 50); }
 });
-$("#adminBtn").onclick = () => S.isAdmin ? openAdmin() : openPin();
+$("#googleBtn").onclick = signIn;
+$("#adminBtn").onclick = openAdmin;
+$("#meBtn").onclick = openAccount;
 $("#refreshBtn").onclick = () => load();
 $("#updateBtn").onclick = () => location.reload();
-$("#verPill").onclick = () => { checkUpdate(); openVersions(); };
-$("#q").addEventListener("input", e => { S.q = e.target.value; $("#searchWrap").classList.toggle("has", !!S.q); render(); });
-$("#qClear").onclick = () => { S.q = ""; $("#q").value = ""; $("#searchWrap").classList.remove("has"); render(); $("#q").focus(); };
-document.querySelectorAll(".chip").forEach(b => b.onclick = () => { S.filter = b.dataset.f; document.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === b)); render(); });
-$("#dateInput").addEventListener("change", e => { if (!e.target.value) return; S.pickedDate = e.target.value; S.checkins = {}; load(); });
+$$(".ver-pill").forEach(p => p.onclick = () => { checkUpdate(); openVersions(); });
+$("#q").addEventListener("input", e => { S.q = e.target.value; $("#searchWrap").classList.toggle("has", !!S.q); renderList(); });
+$("#qClear").onclick = () => { S.q = ""; $("#q").value = ""; $("#searchWrap").classList.remove("has"); renderList(); $("#q").focus(); };
+$("#claimQ").addEventListener("input", e => { S.claimQ = e.target.value; renderClaim(); });
+$$(".chip").forEach(b => b.onclick = () => { S.filter = b.dataset.f; $$(".chip").forEach(x => x.setAttribute("aria-pressed", x === b)); renderList(); });
+$("#dateInput").addEventListener("change", e => { if (!e.target.value) return; S.pickedDate = e.target.value; load(); });
 
 /* ---------- Start ---------- */
 (async function init(){
-  if (S.demo) $("#demoBanner").classList.add("show");
-  render(); renderSync();
-  const saved = ss.get("checkin_pin");
-  if (saved){ try{ await enterAdmin(saved); }catch{ ss.set("checkin_pin", null); } }
-  await load(true);
+  $$(".vtxt").forEach(x => x.textContent = "v" + APP_VERSION);
   checkUpdate();
   console.info(`Claude AI Class check-in · web v${APP_VERSION}`);
+  S.sb = initSupabase();
+  if (!S.sb){ showLogin(); return; }
+  const { data } = await S.sb.auth.getSession();
+  S.session = data.session;
+  S.sb.auth.onAuthStateChange((event, session) => {
+    const had = !!S.session; S.session = session;
+    if (!session){ S.profile = null; S.isAdmin = false; S.loaded = false; showLogin(); }
+    else if (!had || event === "SIGNED_IN"){ showApp(); if (!had) renderAll(); load(true); }
+  });
+  if (S.session){ showApp(); renderAll(); await load(true); }
+  else showLogin();
 })();
 })();
 </script>

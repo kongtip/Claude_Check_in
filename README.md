@@ -1,146 +1,119 @@
 # เช็คชื่อเข้าเรียน · Claude AI Class
 
-**เวอร์ชัน 1.2.0** (หน้าเว็บ v1.2.0 · หลังบ้าน v1.0.0) · เว็บจริง: https://kongtip.github.io/Claude_Check_in/ · อัปเดต 14 พ.ย. 2026 · ดูการเปลี่ยนแปลงใน [CHANGELOG.md](CHANGELOG.md)
+**เวอร์ชัน 2.0.0** (หน้าเว็บ v2.0.0 · ฐานข้อมูล v2.0.0) · อัปเดต 21 พ.ย. 2026 · เว็บจริง: https://kongtip.github.io/Claude_Check_in/
+ดูการเปลี่ยนแปลงทั้งหมดใน [CHANGELOG.md](CHANGELOG.md)
 
-ระบบเช็คชื่อเข้าเรียนออนไลน์ ผู้เรียนแตะชื่อตัวเอง เซ็นชื่อ แล้วกด **Approve** ระบบจะบันทึกเวลา สถานะ (ตรงเวลา / มาสาย) และลายเซ็น **ลง Google Sheet ทันที** ใช้ได้ทั้งมือถือ แท็บเล็ต และคอมพิวเตอร์
+ระบบเช็คชื่อเข้าเรียนออนไลน์ ทุกคน **ล็อกอินด้วย Gmail** ผู้เรียนเลือกชื่อตัวเองครั้งแรกครั้งเดียว แล้วเซ็นชื่อเช็คชื่อได้เฉพาะชื่อตัวเอง ข้อมูลทั้งหมดเก็บใน **Supabase** ใช้ได้ทั้งมือถือ แท็บเล็ต และคอมพิวเตอร์
 
-- หน้าเว็บ: ไฟล์ static วางบน **GitHub Pages** ได้ฟรี
-- หลังบ้าน: **Google Apps Script** ผูกกับ Google Sheet ของคุณ
-- ลายเซ็น: เก็บเป็นไฟล์รูปในโฟลเดอร์ Google Drive แล้วใส่ลิงก์ไว้ในชีต
+- หน้าเว็บ: ไฟล์ `index.html` ไฟล์เดียว วางบน GitHub Pages
+- ฐานข้อมูลและล็อกอิน: Supabase (Postgres + Auth + Row Level Security)
+- ผู้สอน / ผู้ดูแลระบบ: `kongtipoom.mane@gmail.com` (แก้ได้ในตาราง `admins`)
 
 ---
 
 ## โครงสร้างไฟล์
 
 ```
-claude-ai-class-checkin/
-├── index.html              หน้าเว็บทั้งหมดในไฟล์เดียว ← ใส่ URL ของ Apps Script ที่ด้านบนไฟล์
-├── version.json            เลขเวอร์ชันล่าสุด (หน้าเว็บใช้เช็คว่ามีเวอร์ชันใหม่)
-├── apps-script/            (ไม่ต้องใช้บน GitHub — คัดลอกไปวางใน Google Apps Script)
-│   ├── Code.gs             โค้ดหลังบ้าน — คัดลอกไปวางใน Apps Script
-│   └── appsscript.json     ตั้งค่าโปรเจกต์ Apps Script (เขตเวลา Asia/Bangkok)
-├── templates/
-│   └── roster-template.csv ไฟล์ตัวอย่างรายชื่อ
-├── CHANGELOG.md            บันทึกการเปลี่ยนแปลงแต่ละเวอร์ชัน
+Claude_Check_in/
+├── index.html              หน้าเว็บทั้งหมด (ตั้งค่า Supabase อยู่ด้านบนไฟล์)
+├── version.json            เวอร์ชันล่าสุด — หน้าเว็บใช้เช็คว่ามีเวอร์ชันใหม่
+├── supabase/schema.sql     โครงสร้างฐานข้อมูล กฎความปลอดภัย และฟังก์ชันทั้งหมด
+├── templates/roster-template.csv   ไฟล์ตัวอย่างรายชื่อ
+├── CHANGELOG.md
 └── README.md
 ```
 
 ---
 
-## ติดตั้ง (ทำครั้งเดียว ประมาณ 15 นาที)
+## สิ่งที่ตั้งค่าไว้แล้ว ✅
+- โปรเจกต์ Supabase `zjzukimhnjtgwayezpkh` (ภูมิภาค ap-southeast-2) พร้อมตาราง `admins`, `settings`, `roster`, `attendance` และกฎความปลอดภัยครบ
+- รายชื่อผู้เรียน 22 คน, เวลาเริ่มเรียน 09:00 น., นับว่าสายหลัง 15 นาที, เขตเวลา Asia/Bangkok
+- `index.html` ใส่ `SUPABASE_URL` และ publishable key แล้ว
 
-### 1. สร้าง Google Sheet
-1. ไปที่ [sheets.new](https://sheets.new) สร้างชีตใหม่ ตั้งชื่อ เช่น `Claude AI Class – Attendance`
-2. เมนู **Extensions › Apps Script**
+## สิ่งที่ต้องทำเอง (ครั้งเดียว ประมาณ 10 นาที) — เปิดล็อกอินด้วย Google
 
-### 2. วางโค้ดหลังบ้าน
-1. ลบโค้ดเดิมในไฟล์ `Code.gs` ออกทั้งหมด แล้ววางเนื้อหาจาก `apps-script/Code.gs`
-2. (แนะนำ) ไปที่ **Project Settings** (รูปเฟือง) › ตั้ง **Time zone** เป็น `(GMT+07:00) Bangkok`
-3. กด **Save**
+### 1. สร้าง OAuth Client ใน Google Cloud
+1. ไปที่ [console.cloud.google.com](https://console.cloud.google.com/) › สร้างโปรเจกต์ใหม่ (หรือเลือกโปรเจกต์ที่มี)
+2. **APIs & Services › OAuth consent screen** (หรือ **Google Auth Platform › Branding**)
+   - User type: **External** · App name: `Claude AI Class Check-in` · ใส่อีเมลติดต่อ › Save
+   - ที่ **Audience** กด **Publish app** (ถ้ายังเป็น Testing ต้องเพิ่มอีเมลผู้เรียนทุกคนเป็น test user)
+3. **Credentials › Create credentials › OAuth client ID**
+   - Application type: **Web application**
+   - Authorized JavaScript origins: `https://kongtip.github.io`
+   - Authorized redirect URIs: `https://zjzukimhnjtgwayezpkh.supabase.co/auth/v1/callback`
+4. กด Create แล้วคัดลอก **Client ID** และ **Client secret**
 
-### 3. รัน setup ครั้งแรก
-1. เลือกฟังก์ชัน `setup` จากเมนูด้านบน แล้วกด **Run**
-2. Google จะขอสิทธิ์ › เลือกบัญชี › **Advanced › Go to … (unsafe) › Allow**
-   (ขึ้นคำเตือนเพราะเป็นสคริปต์ที่คุณเขียนเอง ไม่ใช่แอปที่ Google ตรวจแล้ว)
-3. ระบบจะสร้างชีต `Roster`, `Attendance`, `Settings` และโฟลเดอร์ลายเซ็นใน Drive
-4. ดู **PIN ผู้สอน** ได้ใน Execution log หรือเมนู **เช็คชื่อ Claude AI › ดู PIN ผู้สอน** ในหน้า Sheet
-   เปลี่ยน PIN ได้ที่ **Project Settings › Script properties › `ADMIN_PIN`**
+### 2. เปิด Google ใน Supabase
+1. [Supabase Dashboard](https://supabase.com/dashboard/project/zjzukimhnjtgwayezpkh) › **Authentication › Sign In / Providers › Google**
+2. เปิด **Enable Sign in with Google** › วาง Client ID และ Client secret › Save
 
-### 4. Deploy เป็น Web app
-1. กด **Deploy › New deployment** › รูปเฟือง › เลือก **Web app**
-2. ตั้งค่า
-   - Description: `v1.0.0`
-   - Execute as: **Me**
-   - Who has access: **Anyone**
-3. กด **Deploy** แล้วคัดลอก **Web app URL** (ลงท้ายด้วย `/exec`)
+### 3. ตั้งค่า URL ที่อนุญาต
+**Authentication › URL Configuration**
+- Site URL: `https://kongtip.github.io/Claude_Check_in/`
+- Redirect URLs › Add URL: `https://kongtip.github.io/Claude_Check_in/`
 
-### 5. ใส่ URL ใน `index.html`
-เปิด `index.html` (บน GitHub กดรูปดินสอ ✏️) หาส่วน **ตั้งค่า** ด้านบนไฟล์ แล้ววาง URL:
-```js
-window.CHECKIN_CONFIG = {
-  APPS_SCRIPT_URL: "https://script.google.com/macros/s/xxxxxxxx/exec",
-  CLASS_TITLE: "Claude AI Class",
-  POLL_SECONDS: 15
-};
-```
-
-### 6. ขึ้น GitHub Pages
-1. สร้าง repository ใหม่บน GitHub เช่น `claude-ai-class-checkin`
-2. **Add file › Upload files** › อัปโหลดอย่างน้อย `index.html` และ `version.json` ไว้ที่ชั้นนอกสุดของ repo (ไม่ใช่ในโฟลเดอร์ย่อย) แล้ว Commit
-   ไฟล์อื่น (README, CHANGELOG, apps-script) อัปไว้เป็นเอกสารได้ แต่หน้าเว็บไม่จำเป็นต้องใช้
-3. **Settings › Pages** › Source: **Deploy from a branch** › Branch: `main` / `(root)` › Save
-4. รอ 1–2 นาที จะได้ลิงก์ `https://<ชื่อผู้ใช้>.github.io/claude-ai-class-checkin/`
-
-### 7. ทดสอบ
-1. เปิดลิงก์ › ด้านล่างแถบสรุปต้องขึ้น **"เชื่อม Google Sheets แล้ว"** และ **"เว็บ v1.2.0 · หลังบ้าน v1.0.0"**
-2. กดปุ่ม **ผู้สอน** มุมขวาบน › ใส่ PIN › นำเข้ารายชื่อ
-3. ลองเช็คชื่อ 1 คน › เปิด Google Sheet ชีต `Attendance` ต้องมีแถวใหม่ทันที
+### 4. ทดสอบ
+1. เปิด https://kongtip.github.io/Claude_Check_in/ › **เข้าสู่ระบบด้วย Google** › เลือก `kongtipoom.mane@gmail.com`
+2. หัวเว็บต้องขึ้นป้าย **ผู้สอน** และปุ่ม **จัดการคลาส** ใต้แถบสรุปต้องขึ้น "เว็บ v2.0.0 · ฐานข้อมูล v2.0.0"
+3. ลองล็อกอินด้วย Gmail อื่น › ต้องเห็นหน้า "เลือกชื่อของคุณ"
 
 ---
 
 ## การใช้งาน
 
-**ผู้เรียน** — เปิดลิงก์ (หรือสแกน QR) › ค้นหาชื่อ › **Approve** › เซ็นชื่อ › ยืนยัน
-ผู้เรียนไม่ต้องล็อกอิน และเช็คชื่อได้วันละ 1 ครั้งต่อคน
+**ผู้เรียน**
+1. เปิดลิงก์ (หรือสแกน QR) › เข้าสู่ระบบด้วย Google
+2. ครั้งแรก: เลือกชื่อตัวเองจากรายชื่อ (เลือกได้ครั้งเดียว)
+3. ทุกครั้งที่มาเรียน: กด **เช็คชื่อวันนี้** › เซ็นชื่อ › Approve
 
-**ผู้สอน** — ปุ่ม **ผู้สอน** › ใส่ PIN แล้วจะทำได้:
-- นำเข้ารายชื่อจาก CSV / Excel รวมถึงไฟล์ Google Forms ที่มี "ชื่อ-นามสกุล 2, 3, …" (แยกเป็นรายคนให้อัตโนมัติ และตัดชื่อซ้ำ)
-- เพิ่มรายชื่อทีละคน ตั้งเวลาเริ่มเรียน และจำนวนนาทีที่นับว่าสาย
-- ดูข้อมูลย้อนหลังตามวันที่ ยกเลิกการเช็คชื่อรายคน และดาวน์โหลด CSV สรุปทั้งคลาส
-- เปิด Google Sheet ได้จากปุ่มในหน้าจัดการ
+**ผู้สอน** (ปุ่ม **จัดการคลาส**)
+- นำเข้ารายชื่อจาก CSV / Excel / Google Forms — ถ้ามีคอลัมน์อีเมล ระบบผูกบัญชีให้อัตโนมัติเมื่อผู้เรียนล็อกอินด้วย Gmail นั้น
+- ปุ่ม `⋯` ที่แต่ละชื่อ: แก้ชื่อ / กลุ่ม / Gmail, **ยกเลิกการผูกบัญชี** (เมื่อผู้เรียนเลือกชื่อผิด), ลบรายชื่อ
+- เช็คชื่อแทนผู้เรียน (เช่น ใช้แท็บเล็ตหน้าห้อง), ดูลายเซ็น, ยกเลิกการเช็คชื่อ
+- ตั้งเวลาเริ่มเรียน และนาทีที่นับว่าสาย, ดูข้อมูลย้อนหลังตามวันที่
+- ส่งออก: คัดลอกไปวางใน Google Sheets หรือดาวน์โหลด CSV
 
-> แก้ไขรายชื่อใน Google Sheet ได้โดยตรงด้วย พิมพ์ชื่อในคอลัมน์ B ของชีต `Roster` แล้วเว้นคอลัมน์ ID ว่างไว้ ระบบจะใส่ ID ให้เอง
+**เพิ่มผู้สอนคนอื่น** — Supabase › SQL Editor:
+```sql
+insert into public.admins (email) values ('another.teacher@gmail.com');
+```
 
-### ข้อมูลใน Google Sheet
+---
 
-| ชีต | เก็บอะไร |
+## ความปลอดภัย
+
+| ใคร | เห็น / ทำได้ |
 |---|---|
-| `Roster` | ID · ชื่อ-นามสกุล · รหัส · กลุ่ม · ลำดับ · เพิ่มเมื่อ |
-| `Attendance` | Timestamp · วันที่ · เวลา · RosterID · ชื่อ · รหัส · กลุ่ม · สถานะ · ลิงก์ลายเซ็น · อุปกรณ์ |
-| `Settings` | ชื่อคลาส · เวลาเริ่มเรียน · นาทีที่นับว่าสาย |
+| ยังไม่ล็อกอิน | เห็นเฉพาะหน้าล็อกอิน อ่านข้อมูลใดๆ ไม่ได้ |
+| ผู้เรียน | เห็นชื่อ กลุ่ม และสถานะของเพื่อน · เช็คชื่อได้เฉพาะชื่อตัวเองวันละครั้ง · เห็นลายเซ็นของตัวเองเท่านั้น |
+| ผู้สอน | เห็นและจัดการได้ทุกอย่าง รวมถึงลายเซ็นและอีเมล |
 
-เวลาที่บันทึกมาจาก **เซิร์ฟเวอร์ของ Google** ไม่ใช่จากเครื่องผู้เรียน จึงแก้นาฬิกาในมือถือเพื่อโกงเวลาไม่ได้
+- กฎทั้งหมดบังคับในฐานข้อมูล (Row Level Security + ฟังก์ชัน `check_in`, `claim_roster`) แก้หน้าเว็บก็ข้ามกฎไม่ได้
+- เวลาเช็คชื่อมาจากเซิร์ฟเวอร์ Supabase แก้นาฬิกาในเครื่องเพื่อโกงเวลาไม่ได้
+- `SUPABASE_KEY` ใน `index.html` เป็น **publishable key** เปิดเผยได้ตามปกติ — **ห้ามใส่ secret key หรือ service_role key ในหน้าเว็บเด็ดขาด**
+- อย่าอัปโหลดไฟล์รายชื่อผู้เรียนจริงขึ้น GitHub (repo สาธารณะ) ให้นำเข้าผ่านปุ่มจัดการคลาสแทน
 
 ---
 
 ## เวอร์ชัน และการอัปเดต
 
-ระบบนี้แสดงเวอร์ชันไว้ 4 จุด เพื่อให้มั่นใจว่าใช้เวอร์ชันล่าสุดเสมอ:
-
 | จุด | ดูได้ที่ |
 |---|---|
-| หน้าเว็บ | **ป้ายเวอร์ชันบนหัวเว็บ** (กดเพื่อดูประวัติเวอร์ชัน), ใต้แถบสรุป และท้ายหน้า |
-| ระบบหลังบ้าน | ใต้แถบสรุป "หลังบ้าน v…" (ส่งมาจาก Apps Script) |
-| เวอร์ชันใหม่บน GitHub | หน้าเว็บเช็ค `version.json` ทุก 5 นาที ถ้ามีใหม่จะขึ้นแถบ **"มีเวอร์ชันใหม่"** และจุดสีส้มบนป้ายเวอร์ชัน |
-| เวอร์ชันไม่ตรงกัน | ถ้า Apps Script เก่ากว่า `MIN_BACKEND` ที่หน้าเว็บกำหนด หรือเลข MAJOR ต่างกัน จะขึ้นแถบเตือนสีเหลือง |
+| หน้าเว็บ | ป้ายเวอร์ชันบนหัวเว็บและหน้าล็อกอิน (กดเพื่อดูประวัติ), ใต้แถบสรุป, ท้ายหน้า |
+| ฐานข้อมูล | ใต้แถบสรุป "ฐานข้อมูล v…" (จากฟังก์ชัน `public.backend_version()`) |
+| เวอร์ชันใหม่บน GitHub | หน้าเว็บเช็ค `version.json` ทุก 5 นาที แล้วขึ้นจุดสีส้มและแถบ "มีเวอร์ชันใหม่" |
+| ไม่เข้ากัน | ถ้าฐานข้อมูลเก่ากว่า `MIN_BACKEND` ใน `index.html` จะขึ้นแถบเตือนสีเหลือง |
 
-### อัปเดตเวอร์ชัน (เช่น 1.0.0 → 1.1.0)
-1. คัดลอก `APPS_SCRIPT_URL` จาก `index.html` เดิมเก็บไว้ › อัปโหลด `index.html` และ `version.json` ชุดใหม่ทับ › ใส่ URL กลับในส่วนตั้งค่า
-2. ถ้า `Code.gs` เปลี่ยน ให้วางโค้ดใหม่ใน Apps Script แล้วไปที่
-   **Deploy › Manage deployments › ✏️ Edit › Version: New version › Deploy**
-   (วิธีนี้ทำให้ URL เดิมยังใช้ได้ ไม่ต้องแก้ APPS_SCRIPT_URL)
-3. เปิดหน้าเว็บ ตรวจเลขเวอร์ชันใต้แถบสรุปว่าตรงกับ CHANGELOG
-
-> สำหรับผู้พัฒนา: เวลาออกเวอร์ชันใหม่ เปลี่ยนเลขให้ตรงกันใน `version.json`, `APP_VERSION` / `RELEASES` / `<meta name="version">` / ป้ายบนหัวเว็บ / footer ใน `index.html` (และ `MIN_BACKEND` ถ้าต้องใช้ Code.gs ใหม่), `BACKEND_VERSION` ใน `Code.gs` (ถ้าแก้หลังบ้าน), หัว README และเพิ่มรายการใน `CHANGELOG.md`
-
----
-
-## ความปลอดภัยและข้อมูลส่วนบุคคล
-
-- **อย่าอัปโหลดรายชื่อผู้เรียนจริงขึ้น GitHub** repo สาธารณะใครก็เปิดอ่านได้ รายชื่อควรอยู่ใน Google Sheet เท่านั้น (`.gitignore` กันไฟล์ `.xlsx` และ `roster-*.csv` ไว้แล้ว แต่ถ้าอัปโหลดผ่านหน้าเว็บ GitHub ไฟล์นี้จะไม่มีผล ต้องระวังเอง)
-- Web app ตั้งเป็น "Anyone" เพื่อให้ผู้เรียนเช็คชื่อได้โดยไม่ต้องล็อกอิน คนที่รู้ URL จะเห็นรายชื่อ (ชื่อ + กลุ่ม) และเช็คชื่อแทนคนอื่นได้ ระบบจึงเก็บลายเซ็นและเวลาจากเซิร์ฟเวอร์ไว้ตรวจสอบย้อนหลัง
-- งานของผู้สอน (นำเข้า ลบ ตั้งค่า) ต้องใช้ PIN — **เปลี่ยน PIN จากค่าที่ระบบสุ่มให้** ถ้าจะแชร์หน้าจอ และอย่าใส่ PIN ไว้ในไฟล์ใดๆ บน GitHub
-- ลายเซ็นเป็นแบบ **ส่วนตัว** ตามค่าเริ่มต้น (เปิดได้เฉพาะเจ้าของ Drive) ถ้าอยากให้ทุกคนที่มีลิงก์เปิดดูได้ ตั้ง Script property `SIGNATURE_SHARING` = `link`
-- ชื่อที่ขึ้นต้นด้วย `= + - @` จะถูกใส่ `'` นำหน้าก่อนเขียนลงชีต กันการแทรกสูตร
+> สำหรับผู้พัฒนา: ออกเวอร์ชันใหม่ให้เปลี่ยนเลขใน `version.json`, `APP_VERSION` / `RELEASES` / `<meta name="version">` / footer ใน `index.html`, `backend_version()` ใน `supabase/schema.sql` (ถ้าแก้ฐานข้อมูล), หัว README และเพิ่มรายการใน `CHANGELOG.md`
 
 ## แก้ปัญหา
 
 | อาการ | วิธีแก้ |
 |---|---|
-| หน้าเว็บไม่มีสี/ดีไซน์ ตัวหนังสือเรียงยาว | ใช้ `index.html` ตั้งแต่ v1.0.1 ขึ้นไป (รวมทุกอย่างในไฟล์เดียว) และตรวจว่าไฟล์อยู่ชั้นนอกสุดของ repo |
-| ขึ้น "โหมดทดลอง" | ยังไม่ได้ใส่ `APPS_SCRIPT_URL` ในส่วนตั้งค่าของ `index.html` |
-| "เชื่อมต่อ Google Sheets ไม่ได้" | URL ต้องลงท้ายด้วย `/exec` และ Deploy เป็น Anyone · ลองเปิด `URL?action=ping` ในเบราว์เซอร์ ต้องเห็น `"ok":true` |
-| แก้ Code.gs แล้วไม่เปลี่ยน | ต้อง Deploy เป็น **New version** ทุกครั้ง (ข้อ "อัปเดตเวอร์ชัน") |
-| เวลา/วันที่เพี้ยน | ตั้ง Time zone ของโปรเจกต์ Apps Script เป็น Bangkok |
-| PIN ไม่ถูกต้อง | ดู PIN จากเมนู **เช็คชื่อ Claude AI › ดู PIN ผู้สอน** ใน Google Sheet |
-| อัปเดตแล้วหน้าเว็บยังเป็นเวอร์ชันเก่า | กดแถบ "มีเวอร์ชันใหม่" หรือรีเฟรชแบบล้างแคช (มือถือ: ปิดแท็บแล้วเปิดใหม่) |
+| กดเข้าสู่ระบบแล้วขึ้น "Unsupported provider" / "provider is not enabled" | ยังไม่ได้เปิด Google ใน Supabase (ขั้นตอนที่ 2) |
+| Google ขึ้น `redirect_uri_mismatch` | Redirect URI ใน Google Cloud ต้องเป็น `https://zjzukimhnjtgwayezpkh.supabase.co/auth/v1/callback` ตรงทุกตัวอักษร |
+| ล็อกอินแล้วเด้งไปหน้าอื่น / localhost | ตั้ง Site URL และ Redirect URLs (ขั้นตอนที่ 3) |
+| ผู้เรียนบางคนล็อกอินไม่ได้ ขึ้น "access blocked" | แอปใน Google Cloud ยังเป็น Testing — กด Publish app |
+| ผู้เรียนเลือกชื่อผิด | ผู้สอนกด `⋯` ที่ชื่อนั้น › ยกเลิกการผูกบัญชี แล้วให้ผู้เรียนเลือกใหม่ |
+| ไม่ขึ้นปุ่มจัดการคลาส | ต้องล็อกอินด้วยอีเมลที่อยู่ในตาราง `admins` |
+| อัปเดตแล้วยังเห็นเวอร์ชันเก่า | กดแถบ "มีเวอร์ชันใหม่" หรือปิดแท็บแล้วเปิดใหม่ |
